@@ -1,0 +1,8 @@
+.Router__link {
+  color: #242b30;
+  text-decoration: none;
+}
+
+.Admins-list {
+  display: flex;
+}

@@ -1,4 +1,4 @@
-import firebase from 'firebase/app'
+import firebase from "firebase";
 const config = {
   apiKey: "AIzaSyD0N2Ji7oYg-xmas1VoI__FnIwRyF3R5DU",
   authDomain: "cambola-001.firebaseapp.com",
@@ -6,8 +6,7 @@ const config = {
   projectId: "cambola-001",
   storageBucket: "cambola-001.appspot.com",
   messagingSenderId: "598449602669",
-  appId: "1:598449602669:web:0e664d3aef1da1e1fd3f64"
-  
+  appId: "1:598449602669:web:0e664d3aef1da1e1fd3f64",
 };
-firebase.initializeApp(config);
-export default firebase;
+const fireDb = firebase.initializeApp(config);
+export default fireDb.database().ref();
