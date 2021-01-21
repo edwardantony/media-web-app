@@ -1,15 +1,14 @@
-import { PageSettings } from './../../config/page-settings.js';
- 
-class PageWithoutSidebar extends React.Component {
-  static contextType = PageSettings;
- 
-  componentDidMount() {
-    this.context.handleSetPageSidebar(false);
+import React from 'react';
+import Home from './../pages/Home.js';
+
+const routes = [
+  {
+    path: '/',
+    exact: true,
+    title: 'Home',
+    component: () => <Home />
   }
- 
-  componentWillUnmount() {
-    this.context.handleSetPageSidebar(true);
-  }
-}
- 
-export default PageWithoutSidebar
+];
+
+
+export default routes;
