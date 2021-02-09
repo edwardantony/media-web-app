@@ -1,7 +1,9 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import { PageSettings } from "../../config/page-settings.js";
-import { fireDbAuth } from "../../services/firebase";
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { PageSettings } from '../../config/page-settings.js';
+import { fireDbAuth } from '../../services/firebase';
+import { Auth } from '../../services/Utils/Auth/Auth';
+import { fetchAdminsList } from '../../services/Utils/DB/DB';
 
 class LoginV1 extends React.Component {
   static contextType = PageSettings;
@@ -9,8 +11,8 @@ class LoginV1 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,25 +29,30 @@ class LoginV1 extends React.Component {
     this.context.handleSetPageHeader(true);
     this.context.handleSetPageContentFullWidth(false);
   }
+  // username: edwardantonyin@gmail.com
+  // password: Y2qUYkmLxi5b
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
+    const { history } = this.props;
     event.preventDefault();
 
     if (!this.state.email || !this.state.password) {
-      return alert("All fields are required");
+      return alert('All fields are required');
     }
 
-    fireDbAuth
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then((res) => {
-        console.log("1", res);
-        fireDbAuth.onAuthStateChanged((user) => {
-          console.log("2", user);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
+    const auth = new Auth();
+
+    const response = await auth.SignIn(this.state.email, this.state.password);
+
+    fireDbAuth.onAuthStateChanged((user) => {
+      user.getIdToken(true).then(async (token) => {
+        localStorage.setItem('utoken', token);
+        history.push('/');
+        // window.location.reload(false);
       });
+    });
+
+    // console.log(response);
   }
 
   handleChange(e) {
@@ -95,10 +102,7 @@ class LoginV1 extends React.Component {
                   <label htmlFor="remember_checkbox">Remember Me</label>
                 </div>
                 <div className="login-buttons">
-                  <button
-                    type="submit"
-                    className="btn btn-success btn-block btn-lg"
-                  >
+                  <button type="submit" className="btn btn-success btn-block btn-lg">
                     Sign me in
                   </button>
                 </div>

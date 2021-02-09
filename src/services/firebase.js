@@ -1,12 +1,12 @@
-import firebase from "firebase";
+import firebase from 'firebase';
 const config = {
-  apiKey: "AIzaSyD0N2Ji7oYg-xmas1VoI__FnIwRyF3R5DU",
-  authDomain: "cambola-001.firebaseapp.com",
-  databaseURL: "https://cambola-001-default-rtdb.firebaseio.com",
-  projectId: "cambola-001",
-  storageBucket: "cambola-001.appspot.com",
-  messagingSenderId: "598449602669",
-  appId: "1:598449602669:web:0e664d3aef1da1e1fd3f64",
+  apiKey: 'AIzaSyBUCN5Pv87l2X3OkELOAYrhYdE55nQw4G0',
+  authDomain: 'sabhatv-ms-dev.firebaseapp.com',
+  projectId: 'sabhatv-ms-dev',
+  storageBucket: 'sabhatv-ms-dev.appspot.com',
+  messagingSenderId: '35862631502',
+  appId: '1:35862631502:web:2e1a26806b64232ccf1f1f',
+  measurementId: 'G-TC1KSLP170',
 };
 const fireDb = firebase.initializeApp(config);
 export const fireDbAuth = fireDb.auth();

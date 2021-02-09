@@ -3,18 +3,19 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from './../components/panel/panel.jsx';
 import makeData from './make-data';
-import { fetchAdminsList } from '../services/Utils/DB/DB';
+import { fetchSubscribersList } from '../services/Utils/DB/DB';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateIcon from '@material-ui/icons/Create';
 
-const Home = () => {
+const Subscribers = () => {
   const [rows, setRows] = useState([]);
   const utoken = localStorage.getItem('utoken') || '';
   useEffect(() => {
-    fetchAdminsList(utoken)
+    fetchSubscribersList(utoken)
       .then((data) => {
         if (data) {
           setRows(data);
+          console.log(data);
         }
       })
       .catch((error) => {
@@ -67,31 +68,11 @@ const Home = () => {
         ],
       },
       {
-        Header: 'Phone Number',
-        columns: [
-          {
-            Header: 'Phone Number',
-            accessor: 'PhoneNumber',
-            sortable: true,
-          },
-        ],
-      },
-      {
         Header: 'Status',
         columns: [
           {
             Header: 'Status',
             accessor: 'age',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'Admin',
-        columns: [
-          {
-            Header: 'Admin',
-            accessor: 'admin',
             sortable: true,
           },
         ],
@@ -142,10 +123,10 @@ const Home = () => {
         <li className="breadcrumb-item active">Data Tables</li>
       </ol>
       <h1 className="page-header">
-        Adminstrators <small>manage and approve the admins here.</small>
+        Subscribers <small>manage and approve the subscribers here.</small>
       </h1>
       <Panel>
-        <PanelHeader>All Admin Lists</PanelHeader>
+        <PanelHeader>All Subscribers Lists</PanelHeader>
         <div class="table-responsive">
           <table class="table table-striped table-bordered" {...getTableProps()}>
             <thead>
@@ -183,16 +164,12 @@ const Home = () => {
                     <tr key={rows[id].displayName}>
                       <td>{rows[id].displayName}</td>
                       <td>{rows[id].email}</td>
-                      <td>{rows[id].phoneNumber}</td>
                       <td>
                         {rows[id].emailVerified ? (
                           <h5 className="status status-confirmed">Confirmed</h5>
                         ) : (
                           <h5 className="status status-notconfirmed">Not Confirmed</h5>
                         )}
-                      </td>
-                      <td>
-                        <h5 className="role">{rows[id].roles[0].toUpperCase()}</h5>
                       </td>
                       <td className="edit">
                         <CreateIcon className="edit-icon"/>
@@ -272,4 +249,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Subscribers;

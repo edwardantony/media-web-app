@@ -3,18 +3,19 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from './../components/panel/panel.jsx';
 import makeData from './make-data';
-import { fetchAdminsList } from '../services/Utils/DB/DB';
+import { fetchSingleVideos } from '../services/Utils/DB/DB';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateIcon from '@material-ui/icons/Create';
 
-const Home = () => {
+const SingleVideo = () => {
   const [rows, setRows] = useState([]);
   const utoken = localStorage.getItem('utoken') || '';
   useEffect(() => {
-    fetchAdminsList(utoken)
+    fetchSingleVideos(utoken)
       .then((data) => {
         if (data) {
-          setRows(data);
+          setRows(data.data);
+          console.log(data.data);
         }
       })
       .catch((error) => {
@@ -50,48 +51,89 @@ const Home = () => {
         Header: 'Name',
         columns: [
           {
-            Header: 'First Name',
-            accessor: 'firstName',
+            Header: 'Title',
+            accessor: 'titleName',
             sortable: true,
           },
         ],
       },
       {
-        Header: 'Email',
+        Header: 'Category',
         columns: [
           {
-            Header: 'Email',
-            accessor: 'email',
+            Header: 'Category',
+            accessor: 'category',
             sortable: true,
           },
         ],
       },
       {
-        Header: 'Phone Number',
+        Header: 'Genre',
         columns: [
           {
-            Header: 'Phone Number',
-            accessor: 'PhoneNumber',
+            Header: 'Genre',
+            accessor: 'genre',
             sortable: true,
           },
         ],
       },
+      {
+        Header: 'Content Creator',
+        columns: [
+          {
+            Header: 'Content Creator',
+            accessor: 'contentCreator',
+            sortable: true,
+          },
+        ],
+      },
+      {
+        Header: 'Date Of Creation',
+        columns: [
+          {
+            Header: 'Date Of Creation',
+            accessor: 'dateCreated',
+            sortable: true,
+          },
+        ],
+      },
+      {
+        Header: 'Release Date',
+        columns: [
+          {
+            Header: 'Release Date',
+            accessor: 'releaseDate',
+            sortable: true,
+          },
+        ],
+      },
+      {
+        Header: 'Likes',
+        columns: [
+          {
+            Header: 'Likes',
+            accessor: 'likes',
+            sortable: true,
+          },
+        ],
+      },
+      {
+        Header: 'DisLikes',
+        columns: [
+          {
+            Header: 'DisLikes',
+            accessor: 'disLikes',
+            sortable: true,
+          },
+        ],
+      },
+
       {
         Header: 'Status',
         columns: [
           {
             Header: 'Status',
             accessor: 'age',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'Admin',
-        columns: [
-          {
-            Header: 'Admin',
-            accessor: 'admin',
             sortable: true,
           },
         ],
@@ -142,10 +184,10 @@ const Home = () => {
         <li className="breadcrumb-item active">Data Tables</li>
       </ol>
       <h1 className="page-header">
-        Adminstrators <small>manage and approve the admins here.</small>
+        Single Videos <small>manage and approve the subscribers here.</small>
       </h1>
       <Panel>
-        <PanelHeader>All Admin Lists</PanelHeader>
+        <PanelHeader>All Single Videos Lists</PanelHeader>
         <div class="table-responsive">
           <table class="table table-striped table-bordered" {...getTableProps()}>
             <thead>
@@ -181,19 +223,15 @@ const Home = () => {
                 {Object.keys(rows).map((id) => {
                   return (
                     <tr key={rows[id].displayName}>
-                      <td>{rows[id].displayName}</td>
-                      <td>{rows[id].email}</td>
-                      <td>{rows[id].phoneNumber}</td>
-                      <td>
-                        {rows[id].emailVerified ? (
-                          <h5 className="status status-confirmed">Confirmed</h5>
-                        ) : (
-                          <h5 className="status status-notconfirmed">Not Confirmed</h5>
-                        )}
-                      </td>
-                      <td>
-                        <h5 className="role">{rows[id].roles[0].toUpperCase()}</h5>
-                      </td>
+                      <td>{rows[id].title}</td>
+                      <td>{rows[id].category}</td>
+                      <td>{rows[id].genre}</td>
+                      <td>{rows[id].createdBy}</td>
+                      <td>{rows[id].createdAt}</td>
+                      <td>{rows[id].releaseDate}</td>
+                      <td>{rows[id].likes}</td>
+                      <td>{rows[id].dislikes}</td>
+                      <td>{rows[id].status}</td>
                       <td className="edit">
                         <CreateIcon className="edit-icon"/>
                         <DeleteIcon className="delete-icon"/>
@@ -272,4 +310,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default SingleVideo;

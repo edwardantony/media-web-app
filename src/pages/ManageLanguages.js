@@ -3,18 +3,19 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from './../components/panel/panel.jsx';
 import makeData from './make-data';
-import { fetchAdminsList } from '../services/Utils/DB/DB';
+import { manageLanguages } from '../services/Utils/DB/DB';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateIcon from '@material-ui/icons/Create';
 
-const Home = () => {
+const ManageLanguages = () => {
   const [rows, setRows] = useState([]);
   const utoken = localStorage.getItem('utoken') || '';
   useEffect(() => {
-    fetchAdminsList(utoken)
+    manageLanguages(utoken)
       .then((data) => {
         if (data) {
           setRows(data);
+          console.log('Manage', data);
         }
       })
       .catch((error) => {
@@ -47,51 +48,73 @@ const Home = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: 'Native Language',
         columns: [
           {
-            Header: 'First Name',
-            accessor: 'firstName',
+            Header: 'Natuve Language',
+            accessor: 'navtiveLanguage',
             sortable: true,
           },
         ],
       },
       {
-        Header: 'Email',
+        Header: 'Language',
         columns: [
           {
-            Header: 'Email',
-            accessor: 'email',
+            Header: 'Language',
+            accessor: 'language',
             sortable: true,
           },
         ],
       },
       {
-        Header: 'Phone Number',
+        Header: 'LanguageID',
         columns: [
           {
-            Header: 'Phone Number',
-            accessor: 'PhoneNumber',
+            Header: 'LanguageID',
+            accessor: 'languageID',
             sortable: true,
           },
         ],
       },
       {
-        Header: 'Status',
+        Header: 'Content Creator',
         columns: [
           {
-            Header: 'Status',
-            accessor: 'age',
+            Header: 'Content Creator',
+            accessor: 'contentCreator',
             sortable: true,
           },
         ],
       },
       {
-        Header: 'Admin',
+        Header: 'Date Of Creation',
         columns: [
           {
-            Header: 'Admin',
-            accessor: 'admin',
+            Header: 'Date Of Creation',
+            accessor: 'dateCreated',
+            sortable: true,
+          },
+        ],
+      },
+
+      {
+        Header: 'Date Of Update',
+        columns: [
+          {
+            Header: 'Date Of Previous Update',
+            accessor: 'updated date',
+            sortable: true,
+          },
+        ],
+      },
+
+      {
+        Header: 'Person Making Previous Update',
+        columns: [
+          {
+            Header: 'Person Making Previous Update',
+            accessor: 'updator',
             sortable: true,
           },
         ],
@@ -142,10 +165,10 @@ const Home = () => {
         <li className="breadcrumb-item active">Data Tables</li>
       </ol>
       <h1 className="page-header">
-        Adminstrators <small>manage and approve the admins here.</small>
+        Video Languages <small>manage and approve the Video Languages here.</small>
       </h1>
       <Panel>
-        <PanelHeader>All Admin Lists</PanelHeader>
+        <PanelHeader>All Video Languages Lists</PanelHeader>
         <div class="table-responsive">
           <table class="table table-striped table-bordered" {...getTableProps()}>
             <thead>
@@ -180,20 +203,14 @@ const Home = () => {
               <tbody {...getTableBodyProps()}>
                 {Object.keys(rows).map((id) => {
                   return (
-                    <tr key={rows[id].displayName}>
-                      <td>{rows[id].displayName}</td>
-                      <td>{rows[id].email}</td>
-                      <td>{rows[id].phoneNumber}</td>
-                      <td>
-                        {rows[id].emailVerified ? (
-                          <h5 className="status status-confirmed">Confirmed</h5>
-                        ) : (
-                          <h5 className="status status-notconfirmed">Not Confirmed</h5>
-                        )}
-                      </td>
-                      <td>
-                        <h5 className="role">{rows[id].roles[0].toUpperCase()}</h5>
-                      </td>
+                    <tr key={rows[id].nativeLang}>
+                      <td>{rows[id].nativeLang}</td>
+                      <td>{rows[id].lang}</td>
+                      <td>{rows[id].langId}</td>
+                      <td>{rows[id].createdBy}</td>
+                      <td>{rows[id].createdAt}</td>
+                      <td>{rows[id].updatedAt}</td>
+                      <td>{rows[id].updatedBy}</td>
                       <td className="edit">
                         <CreateIcon className="edit-icon"/>
                         <DeleteIcon className="delete-icon"/>
@@ -272,4 +289,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ManageLanguages;
