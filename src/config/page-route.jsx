@@ -1,16 +1,16 @@
 import React from 'react';
-import Home from './../pages/Home.js';
+import Home from '../pages/dashboard/Dashboard.js';
 import Login from './../pages/user/SignIn';
 import SignUp from './../pages/user/SignUp';
-import Subscribers from './../pages/Subscribers';
-import SingleVideos from './../pages/SingleVideos';
-import SeriesVideos from './../pages/SeriesVideos';
-import ManageLanguages from './../pages/ManageLanguages';
-import ManageGenre from './../pages/ManageGenre';
-import ManageCategories from './../pages/ManageCategories';
-import AdminRoles from './../pages/AdminRoles';
-import { AddAdmin } from './../pages/AddAdmin';
-import { AddSubscriber } from './../pages/AddSubscribers';
+import Subscribers from '../pages/subscribers/Subscribers';
+import SingleVideos from '../pages/videos/SingleVideos';
+import SeriesVideos from './../pages/videos/SeriesVideos';
+import ManageLanguages from './../pages/videos/ManageLanguages';
+import ManageGenre from './../pages/videos/ManageGenre';
+import ManageCategories from './../pages/videos/ManageCategories';
+import AdminRoles from '../pages/adminstrators/AdminRoles';
+import { AddAdmin } from '../pages/adminstrators/AddAdmin';
+import { AddSubscriber } from '../pages/subscribers/AddSubscribers';
 
 const routes = [
   {

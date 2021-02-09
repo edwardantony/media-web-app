@@ -10,11 +10,15 @@ import Footer from './components/footer/footer.jsx';
 import FloatSubMenu from './components/float-sub-menu/float-sub-menu.jsx';
 import SignIn from './pages/user/SignIn';
 import axios from 'axios';
+import SignUp from './pages/user/SignUp.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-
+    const token = localStorage.getItem("utoken")
+    let jwt = require('jsonwebtoken');
+    const currentUser = token ? jwt.decode(token) : false;
+    
     this.toggleSidebarMinify = (e) => {
       e.preventDefault();
       if (this.state.pageSidebarMinify) {
@@ -266,7 +270,7 @@ class App extends React.Component {
     };
 
     this.state = {
-      authStatus: true,
+      authStatus: currentUser,
 
       pageHeader: true,
       pageheaderMegaMenu: false,
@@ -421,6 +425,7 @@ class App extends React.Component {
       return (
         <PageSettings.Provider value={this.state}>
           <SignIn />;
+          {/* <SignUp/> */}
         </PageSettings.Provider>
       );
     }

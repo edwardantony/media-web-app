@@ -91,3 +91,14 @@ export const addAdmin = async (form_data, token) => {
 
   return response;
 };
+
+export const addSubscriber = async (form_data, token) => {
+  const url = 'https://adminapi.sabhatv-dev.mediasuite.in/subscribers';
+  const response = await axios.post(url, form_data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response;
+};

@@ -48,7 +48,7 @@ class LoginV1 extends React.Component {
       user.getIdToken(true).then(async (token) => {
         localStorage.setItem('utoken', token);
         history.push('/');
-        // window.location.reload(false);
+        window.location.reload();
       });
     });
 
