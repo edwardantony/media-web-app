@@ -71,16 +71,18 @@ export const manageCategories = async (token) => {
 
 export const manageBanners = async (token) => {
   var response;
+  var url ='https://adminapi.sabhatv-dev.mediasuite.in';
+  var endpoint ='/banners';
   var config = {
     method: 'get',
-    url: 'https://adminapi.sabhatv-dev.mediasuite.in/banners',
+    url: url+endpoint,
     headers: { 
       Authorization: `Bearer ${token}`,
     }
   };
   axios(config)
   .then(function (response) {
-    console.log(JSON.stringify(response.data));
+    console.log(response.data);
   })
   .catch(function (error) {
     console.log(error);
