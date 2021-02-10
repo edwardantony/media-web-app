@@ -67,8 +67,8 @@ class LoginV1 extends React.Component {
         <div className="login-container">
           <div className="login-header">
             <div className="brand">
-              <span className="logo"></span> <b>Color</b> Admin
-              <small>responsive bootstrap 4 admin template</small>
+              <span className="logo"></span> <b>Media</b> Suite
+              <small>login with your credentials</small>
             </div>
             <div className="icon">
               <i className="fa fa-lock"></i>

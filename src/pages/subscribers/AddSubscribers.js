@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Panel, PanelBody, PanelFooter, PanelHeader } from '../../components/panel/panel';
+import { Link } from 'react-router-dom';
+import { Panel, PanelBody, PanelFooter, PanelHeader} from '../../components/panel/panel';
 import { Button, Input, FormGroup, Label, Form, Row, Col } from 'reactstrap';
 import { Multiselect } from 'multiselect-react-dropdown';
 import InputMask from 'react-input-mask';
@@ -62,7 +63,7 @@ export const AddSubscriber = () => {
     // form_data.append('email', email);
 
     console.log(form_data);
-    addSubscriber(form_data, token)
+    addSubscriber(JSON.stringify(form_data), token)
       .then((response) => {
         console.log(response);
       })
@@ -72,86 +73,106 @@ export const AddSubscriber = () => {
   };
   const [options] = useState(data);
   return (
-    <div style={{ width: "800px" }}>
+    <div>
+      <ol className="breadcrumb float-xl-right">
+        <li className="breadcrumb-item">
+          <Link to="/">Home</Link>
+        </li>
+        <li className="breadcrumb-item">
+          <Link to="/subscriber/view-subscribers">Subscribers</Link>
+        </li>
+        <li className="breadcrumb-item active">Add Subscriber</li>
+      </ol>
+      <h1 className="page-header">
+        Add Subscribers <small>add a new subscriber here.</small>
+      </h1>
+      
       <Panel>
-        <PanelHeader noButton={true}>Add Subscriber</PanelHeader>
+        <PanelHeader noButton={true}>Add Subscriber Form</PanelHeader>
         <PanelBody>
-          <Form>
-            <Row>
-              <Col>
-                <FormGroup>
-                  <Label for="first">First Name</Label>
-                  <Input
-                    type="text"
-                    name="first"
-                    id="first"
-                    // placeholder="Product Name"
-                    value={firstName}
-                    onChange={onChangeFirstName}
-                  // className={!isInvalidName ? "" : "is-invalid"}
-                  />
-                </FormGroup>
-              </Col>
-              <Col>
-                <FormGroup>
-                  <Label for="Last">Last Name</Label>
-                  <Input
-                    type="text"
-                    name="last"
-                    id="last"
-                    // placeholder="Product Name"
-                    value={lastName}
-                    onChange={onChangeLastName}
-                  // className={!isInvalidName ? "" : "is-invalid"}
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <FormGroup>
-                  <Label for="email">Email</Label>
-                  <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    // placeholder="Product Name"
-                    value={email}
-                    onChange={onChangeEmail}
-                  // className={!isInvalidName ? "" : "is-invalid"}
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <FormGroup>
-                  <Label for="email">Phone No.</Label>
-                  <InputMask mask="+\91 999 999 999" maskChar="_" className="form-control" value={phone} onChange={onChangePhone}></InputMask>
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <FormGroup>
-                  <Label for="email">Dropdown Role</Label>
-                  <Multiselect onRemove={handleRemoval} onSelect={handleMultiselect} options={options} displayValue={'role'} />
-                </FormGroup>
-              </Col>
-            </Row>
-          </Form>
+                <Row>
+                   <Col md ="8">
+                   <div class="card">
+                     <div class="card-body">
+                     <Form>
+                      <Row>
+                        <Col>
+                          <FormGroup>
+                            <Label for="first">First Name</Label>
+                            <Input
+                              type="text"
+                              name="first"
+                              id="first"
+                              // placeholder="Product Name"
+                              value={firstName}
+                              onChange={onChangeFirstName}
+                            // className={!isInvalidName ? "" : "is-invalid"}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col>
+                          <FormGroup>
+                            <Label for="last">Last Name</Label>
+                            <Input
+                              type="text"
+                              name="last"
+                              id="last"
+                              // placeholder="Product Name"
+                              value={lastName}
+                              onChange={onChangeLastName}
+                            // className={!isInvalidName ? "" : "is-invalid"}
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md='8'>
+                          <FormGroup>
+                            <Label for="email">Email</Label>
+                            <Input
+                              type="email"
+                              name="email"
+                              id="email"
+                              // placeholder="Product Name"
+                              value={email}
+                              onChange={onChangeEmail}
+                            // className={!isInvalidName ? "" : "is-invalid"}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col>
+                          <FormGroup>
+                            <Label for="phone">Phone No.</Label>
+                            <InputMask id="phone" mask="+\91 999 999 9999" maskChar="_" className="form-control" value={phone} onChange={onChangePhone}></InputMask>
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <FormGroup>
+                            <Label for="role">Subscriber Roles</Label>
+                            <Multiselect id="role" onRemove={handleRemoval} onSelect={handleMultiselect} options={options} displayValue={'role'} />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                    </Form>
+                     </div>
+                     <div class="card-footer">
+                     <Row>
+                      <Col>
+                      <div className="pull-right">
+                        <button onClick={AddNewAdmin} className="btn btn-primary mr-3">Submit</button>
+                        <button onClick={AddNewAdmin} className="btn btn-secondary">Cancel</button>
+                      </div>
+                      </Col>
+                    </Row>
+                     </div>
+                    </div>
+                   </Col>
+                </Row>
         </PanelBody>
-        <PanelFooter>
-            <Row>
-              <Col>
-              <div className="pull-right">
-                <button onClick={AddNewAdmin} className="btn btn-primary mr-3">Submit</button>
-                <button onClick={AddNewAdmin} className="btn btn-secondary">Cancel</button>
-              </div>
-              </Col>
-            </Row>
-        </PanelFooter>
       </Panel>
+      
     </div>
   );
 };
