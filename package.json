@@ -1,6 +1,6 @@
 {
-  "name": "color-admin",
-  "version": "0.0.0",
+  "name": "media-suite",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@fullcalendar/bootstrap": "^5.3.1",

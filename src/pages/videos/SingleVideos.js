@@ -3,15 +3,13 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from '../../components/panel/panel.jsx';
 import makeData from '../make-data';
-import { fetchSingleVideos } from '../../services/Utils/DB/DB';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CreateIcon from '@material-ui/icons/Create';
+import { getData } from '../../services/Utils/DB/DB';
 
 const SingleVideo = () => {
   const [rows, setRows] = useState([]);
   const utoken = localStorage.getItem('utoken') || '';
   useEffect(() => {
-    fetchSingleVideos(utoken)
+    getData('/singles',utoken)
       .then((data) => {
         if (data) {
           setRows(data.data);
@@ -22,27 +20,6 @@ const SingleVideo = () => {
         console.log(error);
       });
 
-    // firebase.child('admins').on('value', (snapshot) => {
-    //   console.log('HA');
-    //   console.log('Admin list', snapshot.val());
-    //   setRows(snapshot.val());
-    // });
-    // const url = 'https://adminapi.sabhatv-dev.mediasuite.in/';
-    // const token =
-    //   'AOvuKvQ5pnxAUMz4Kibc9W4vESMPxU5Xy4RuNb4hEcea_Ju0YpXAKguMdBe4b3609VNyASZkSBBWXSWqBfA4hK3Ld-P8FHxklcEkzw13qU-1eqzFq8K7v4cOSqq4Tz1YjReyZiHlzSN_Z1_d7hYRl4ALdVFP_Y-Xmjp-LjXvtqkjNvxSwXWkyI5uFu5TZ2zRgxTdzXBPXFmQ85GVDoSanSgL13yHSw6bSYCMzVkxRvisu9zCQ_fcKE0';
-    // axios
-    //   .get(url, {
-    //     headers: {
-    //       Authorization: 'Bearer ' + token,
-    //       'Access-Control-Allow-Origin': 'origin',
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   }, []);
 
   const columns = React.useMemo(

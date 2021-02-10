@@ -3,15 +3,13 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from '../../components/panel/panel.jsx';
 import makeData from '../make-data';
-import { manageAdminRoles } from '../../services/Utils/DB/DB';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CreateIcon from '@material-ui/icons/Create';
+import { getData } from '../../services/Utils/DB/DB';
 
 const AdminRoles = () => {
   const [rows, setRows] = useState([]);
   const utoken = localStorage.getItem('utoken') || '';
   useEffect(() => {
-    manageAdminRoles(utoken)
+    getData('/roles',utoken)
       .then((data) => {
         if (data) {
           setRows(data);
@@ -21,28 +19,6 @@ const AdminRoles = () => {
       .catch((error) => {
         console.log(error);
       });
-
-    // firebase.child('admins').on('value', (snapshot) => {
-    //   console.log('HA');
-    //   console.log('Admin list', snapshot.val());
-    //   setRows(snapshot.val());
-    // });
-    // const url = 'https://adminapi.sabhatv-dev.mediasuite.in/';
-    // const token =
-    //   'AOvuKvQ5pnxAUMz4Kibc9W4vESMPxU5Xy4RuNb4hEcea_Ju0YpXAKguMdBe4b3609VNyASZkSBBWXSWqBfA4hK3Ld-P8FHxklcEkzw13qU-1eqzFq8K7v4cOSqq4Tz1YjReyZiHlzSN_Z1_d7hYRl4ALdVFP_Y-Xmjp-LjXvtqkjNvxSwXWkyI5uFu5TZ2zRgxTdzXBPXFmQ85GVDoSanSgL13yHSw6bSYCMzVkxRvisu9zCQ_fcKE0';
-    // axios
-    //   .get(url, {
-    //     headers: {
-    //       Authorization: 'Bearer ' + token,
-    //       'Access-Control-Allow-Origin': 'origin',
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   }, []);
 
   const columns = React.useMemo(
@@ -53,16 +29,6 @@ const AdminRoles = () => {
           {
             Header: 'Display Name',
             accessor: 'displayName',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'Role ID',
-        columns: [
-          {
-            Header: 'Role ID',
-            accessor: 'email',
             sortable: true,
           },
         ],
@@ -83,26 +49,6 @@ const AdminRoles = () => {
           {
             Header: 'Date Of Creation',
             accessor: 'creation',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'Updated By',
-        columns: [
-          {
-            Header: 'Created By',
-            accessor: 'personUpdated',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'Date Of Previous Update',
-        columns: [
-          {
-            Header: 'Date Of Previous Update',
-            accessor: 'previousUpdate',
             sortable: true,
           },
         ],
@@ -163,8 +109,8 @@ const AdminRoles = () => {
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                    <th className="width-150" {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div class="d-flex" style={{ minWidth: '150px' }}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      <div class="d-flex" style={{ minWidth: '1%' }}>
                         <span>{column.render('Header')}</span>
                         <span class="ml-auto">
                           {column.sortable ? (
@@ -193,14 +139,11 @@ const AdminRoles = () => {
                   return (
                     <tr key={rows[id].displayName}>
                       <td>{rows[id].displayName}</td>
-                      <td>{rows[id].roleId}</td>
                       <td>{rows[id].createdBy}</td>
                       <td>{rows[id].createdAt}</td>
-                      <td>{rows[id].updatedBy}</td>
-                      <td>{rows[id].updatedAt}</td>
                       <td className="edit">
-                        <CreateIcon className="edit-icon"/>
-                        <DeleteIcon className="delete-icon"/>
+                        <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );

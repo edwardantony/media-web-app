@@ -4,7 +4,7 @@ import { Panel, PanelBody, PanelFooter, PanelHeader } from '../../components/pan
 import { Button, Input, FormGroup, Label, Form, Row, Col } from 'reactstrap';
 import { Multiselect } from 'multiselect-react-dropdown';
 import InputMask from 'react-input-mask';
-import { addSubscriber } from '../../services/Utils/DB/DB';
+import { postData } from '../../services/Utils/DB/DB';
 
 const data = [
   { role: 'subscriber', id: 1 },
@@ -62,13 +62,12 @@ export const AddSubscriber = () => {
     // form_data.append('role', user_roles);
     // form_data.append('email', email);
 
-    console.log(form_data);
-    addSubscriber(JSON.stringify(form_data), token)
+    postData('/subscribers',JSON.stringify(form_data), token)
       .then((response) => {
-        console.log(response);
+       // console.log(response);
       })
       .catch((error) => {
-        console.log(error);
+       // console.log(error);
       });
   };
 
