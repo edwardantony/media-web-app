@@ -25,31 +25,21 @@ const Policies = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Category',
+        Header: 'Title',
         columns: [
           {
-            Header: 'Category',
-            accessor: 'category',
+            Header: 'Title',
+            accessor: 'title',
             sortable: true,
           },
         ],
       },
       {
-        Header: 'Content Creator',
+        Header: 'Description',
         columns: [
           {
-            Header: 'Content Creator',
-            accessor: 'contentCreator',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'Date Of Creation',
-        columns: [
-          {
-            Header: 'Date Of Creation',
-            accessor: 'dateCreated',
+            Header: 'Description',
+            accessor: 'description',
             sortable: true,
           },
         ],
@@ -139,9 +129,8 @@ const Policies = () => {
                 {Object.keys(rows).map((id) => {
                   return (
                     <tr key={rows[id].nativeLang}>
-                      <td>{rows[id].category}</td>
-                      <td>{rows[id].createdBy}</td>
-                      <td>{rows[id].updatedAt}</td>
+                      <td>{rows[id].title}</td>
+                      <td>{rows[id].content}</td>
                       <td className="edit">
                         <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
                         <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>

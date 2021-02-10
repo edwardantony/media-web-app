@@ -44,7 +44,7 @@ const Menu = [
   { path: '#', icon: 'fa fa-flag', title: 'Policies',
     children: [
       { path: '/page/view-policies', title: 'View Policies' },
-      { path: '/page/add-policies', title: 'Add Policies' },
+      { path: '/page/add-policy', title: 'Add Policy' },
     ]
   },
 ]

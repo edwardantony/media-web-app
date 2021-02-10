@@ -18,6 +18,7 @@ import VideoLanguages from './../pages/videos/Languages';
 import VideoGenre from './../pages/videos/Genre';
 
 import Policies from './../pages/policies/Policies';
+import { AddPolicy } from './../pages/policies/AddPolicy';
 
 
 
@@ -113,6 +114,13 @@ const routes = [
     exact: true,
     title: 'View Policies',
     component: () => <Policies />,
+  },
+
+  {
+    path: '/page/add-policy',
+    exact: true,
+    title: 'Add Policy',
+    component: () => <AddPolicy />,
   },
 ];
 
