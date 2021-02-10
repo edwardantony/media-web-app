@@ -43,7 +43,7 @@ export const AddSubscriber = () => {
     const updatedRole = user_roles.filter((role) => role !== removedItem.role);
     setUserRoles(updatedRole);
   };
-  const AddNewAdmin = (e) => {
+  const AddNewSubscriber = (e) => {
     e.preventDefault();
 
     const token = localStorage.getItem('utoken');
@@ -51,7 +51,7 @@ export const AddSubscriber = () => {
     firstName: firstName,
     lastName: lastName,
     phoneNumber: phone,
-    role: user_roles,
+    roles: user_roles,
     email: email,
     }
 
@@ -161,8 +161,8 @@ export const AddSubscriber = () => {
                      <Row>
                       <Col>
                       <div className="pull-right">
-                        <button onClick={AddNewAdmin} className="btn btn-primary mr-3">Submit</button>
-                        <button onClick={AddNewAdmin} className="btn btn-secondary">Cancel</button>
+                        <button onClick={AddNewSubscriber} className="btn btn-primary mr-3">Submit</button>
+                        <button onClick={AddNewSubscriber} className="btn btn-secondary">Cancel</button>
                       </div>
                       </Col>
                     </Row>

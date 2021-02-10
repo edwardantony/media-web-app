@@ -49,8 +49,6 @@ class DropdownProfile extends React.Component {
 					</DropdownToggle>
 					<DropdownMenu className="dropdown-menu dropdown-menu-right" tag="ul">
 						<DropdownItem>Edit Profile</DropdownItem>
-						<DropdownItem><span className="badge badge-danger pull-right">0</span> Inbox</DropdownItem>
-						<DropdownItem>Calendar</DropdownItem>
 						<DropdownItem>Setting</DropdownItem>
 						<div className="dropdown-divider"></div>
 						<DropdownItem onClick={this.logOut}>Log Out</DropdownItem>

@@ -9,15 +9,6 @@ const config = {
   measurementId: 'G-TC1KSLP170',
 };
 
-// const config = {
-//   apiKey: "AIzaSyAs47iOri1v74xJoI2ybABfBEqHEj7wSrs",
-//   authDomain: "oldadmin-21613.firebaseapp.com",
-//   projectId: "oldadmin-21613",
-//   storageBucket: "oldadmin-21613.appspot.com",
-//   messagingSenderId: "59029755112",
-//   appId: "1:59029755112:web:cc28794dadbbfc1e3c655d",
-//   measurementId: "G-E4RW0R519F"
-// };
 const fireDb = firebase.initializeApp(config);
 export const fireDbAuth = fireDb.auth();
 export default fireDb.database().ref();

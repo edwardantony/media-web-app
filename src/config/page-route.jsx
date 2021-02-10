@@ -2,16 +2,20 @@ import React from 'react';
 import Dashboard from '../pages/dashboard/Dashboard.js';
 import Login from './../pages/user/SignIn';
 import SignUp from './../pages/user/SignUp';
+
+import Adminstrators from '../pages/adminstrators/Adminstrators';
+import { AddAdmin } from '../pages/adminstrators/AddAdmin';
+import AdminRoles from '../pages/adminstrators/AdminRoles';
+
+import { AddSubscriber } from '../pages/subscribers/AddSubscribers';
 import Subscribers from '../pages/subscribers/Subscribers';
+
 import VideoSingle from '../pages/videos/SingleVideos';
 import VideoSeries from './../pages/videos/SeriesVideos';
 import VideoLanguages from './../pages/videos/Languages';
 import VideoGenre from './../pages/videos/Genre';
 import VideoCategories from './../pages/videos/Categories';
-import Adminstrators from '../pages/adminstrators/Adminstrators';
-import AdminRoles from '../pages/adminstrators/AdminRoles';
-import { AddAdmin } from '../pages/adminstrators/AddAdmin';
-import { AddSubscriber } from '../pages/subscribers/AddSubscribers';
+
 
 const routes = [
   {
