@@ -109,13 +109,9 @@ const AdminRoles = () => {
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-<<<<<<< HEAD
                     <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                       <div class="d-flex" style={{ minWidth: '1%' }}>
-=======
-                    <th className="width-150" {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div className="d-flex" style={{ minWidth: '150px' }}>
->>>>>>> new1
+
                         <span>{column.render('Header')}</span>
                         <span className="ml-auto">
                           {column.sortable ? (
