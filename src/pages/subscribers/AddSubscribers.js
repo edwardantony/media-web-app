@@ -70,6 +70,28 @@ export const AddSubscriber = () => {
         console.log(error);
       });
   };
+
+  const beforeMaskedValueChange = (newState, oldState, userInput) => {
+    var { value } = newState;
+    var selection = newState.selection;
+    var cursorPosition = selection ? selection.start : null;
+ 
+    // keep minus if entered by user
+    // if (value.endsWith('-') && userInput !== '-' && !this.state.value.endsWith('-')) {
+    //   if (cursorPosition === value.length) {
+    //     cursorPosition--;
+    //     selection = { start: cursorPosition, end: cursorPosition };
+    //   }
+    //   value = value.slice(0, -1);
+    // }
+    // value = value.replace(/\s/g, '');
+    console.log(value, selection);
+    return {
+      value,
+      selection
+    };
+  }
+
   const [options] = useState(data);
   return (
     <div style={{ width: "800px" }}>
@@ -127,7 +149,7 @@ export const AddSubscriber = () => {
               <Col>
                 <FormGroup>
                   <Label for="email">Phone No.</Label>
-                  <InputMask mask="+\91 999 999 999" maskChar="_" className="form-control" value={phone} onChange={onChangePhone}></InputMask>
+                  <InputMask mask="+\91999999999" maskChar="_" className="form-control" value={phone} onChange={onChangePhone} beforeMaskedValueChange={beforeMaskedValueChange} ></InputMask>
                 </FormGroup>
               </Col>
             </Row>

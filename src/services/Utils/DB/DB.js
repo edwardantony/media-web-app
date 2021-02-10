@@ -96,7 +96,9 @@ export const addSubscriber = async (form_data, token) => {
   const url = 'https://adminapi.sabhatv-dev.mediasuite.in/subscribers';
   const response = await axios.post(url, form_data, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'text/plain',
+      'Access-Control-Allow-Origin': true,
     },
   });
 
