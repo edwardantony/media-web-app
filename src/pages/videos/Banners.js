@@ -3,33 +3,63 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from './../../components/panel/panel.jsx';
 import makeData from './../make-data';
-import { manageBanners } from './../../services/Utils/DB/DB';
+import { getData } from './../../services/Utils/DB/DB';
 
 
 const Banners = () => {
   const [rows, setRows] = useState([]);
   const utoken = localStorage.getItem('utoken') || '';
   useEffect(() => {
-    manageBanners(utoken)
+    getData('/banners', utoken)
       .then((data) => {
+        console.log(data);
         if (data) {
           setRows(data);
-          console.log('Manage', data);
         }
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-
+  
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Category',
+        Header: 'Image',
         columns: [
           {
-            Header: 'Category',
-            accessor: 'category',
+            Header: '',
+            accessor: 'image',
+            sortable: false,
+          },
+        ],
+      },
+      {
+        Header: 'Title',
+        columns: [
+          {
+            Header: 'Title',
+            accessor: 'title',
+            sortable: true,
+          },
+        ],
+      },
+      {
+        Header: 'Active Image',
+        columns: [
+          {
+            Header: 'Active Image',
+            accessor: 'activeimage',
+            sortable: true,
+          },
+        ],
+      },
+      {
+        Header: 'Type',
+        columns: [
+          {
+            Header: 'Type',
+            accessor: 'type',
             sortable: true,
           },
         ],
@@ -45,11 +75,31 @@ const Banners = () => {
         ],
       },
       {
+        Header: 'Category',
+        columns: [
+          {
+            Header: 'Category',
+            accessor: 'category',
+            sortable: true,
+          },
+        ],
+      },
+      {
         Header: 'Date Of Creation',
         columns: [
           {
             Header: 'Date Of Creation',
             accessor: 'dateCreated',
+            sortable: true,
+          },
+        ],
+      },
+      {
+        Header: 'Status',
+        columns: [
+          {
+            Header: 'Status',
+            accessor: 'status',
             sortable: true,
           },
         ],
@@ -139,9 +189,22 @@ const Banners = () => {
                 {Object.keys(rows).map((id) => {
                   return (
                     <tr key={rows[id].nativeLang}>
-                      <td>{rows[id].category}</td>
+                      <td class='with-img'>
+                      <img src={rows[id].imageUrls.landscape} alt={rows[id].title} className='img-rounded height-30' />
+                      </td>
+                      <td>{rows[id].title}</td>
+                      <td>{rows[id].activeImage}</td>
+                      <td>{rows[id].target.type}</td>
                       <td>{rows[id].createdBy}</td>
-                      <td>{rows[id].updatedAt}</td>
+                      <td>{rows[id].target.category}</td>
+                      <td>{rows[id].createdAt}</td>
+                      <td>
+                        {rows[id].target.status ? (
+                          <span class="label label-green">{rows[id].target.status}</span>
+                        ) : (
+                          <span class="label label-danger">{rows[id].target.status}</span>
+                        )}
+                      </td>
                       <td className="edit">
                         <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
                         <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>

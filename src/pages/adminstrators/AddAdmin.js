@@ -4,7 +4,7 @@ import { Panel, PanelBody, PanelFooter, PanelHeader} from '../../components/pane
 import { Button, Input, FormGroup, Label, Form, Row, Col } from 'reactstrap';
 import { Multiselect } from 'multiselect-react-dropdown';
 import InputMask from 'react-input-mask';
-import { addAdminstrator } from '../../services/Utils/DB/DB';
+import { postData } from '../../services/Utils/DB/DB';
 
 const data = [
   { role: 'admin', id: 1 },
@@ -63,7 +63,7 @@ export const AddAdmin = () => {
     // form_data.append('email', email);
 
     console.log(form_data);
-    addAdminstrator(JSON.stringify(form_data), token)
+    postData('/admins',JSON.stringify(form_data), token)
       .then((response) => {
         console.log(response);
       })

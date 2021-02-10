@@ -38,12 +38,13 @@ const Menu = [
       { path: '/content-management/video-banners', title: 'Manage Banners' },
       { path: '/content-management/video-category', title: 'Manage Categorys' },
       { path: '/content-management/video-language', title: 'Manage Languages' },
+      { path: '/content-management/video-genre', title: 'Manage Genre' },
     ]
   },
-  { path: '#', icon: 'fa fa-flag', title: 'Pages',
+  { path: '#', icon: 'fa fa-flag', title: 'Policies',
     children: [
-      { path: '/page/view-pages', title: 'View Pages' },
-      { path: '/page/add-page', title: 'Add Pages' },
+      { path: '/page/view-policies', title: 'View Policies' },
+      { path: '/page/add-policies', title: 'Add Policies' },
     ]
   },
 ]

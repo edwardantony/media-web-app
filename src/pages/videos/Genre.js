@@ -3,15 +3,13 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from './../../components/panel/panel.jsx';
 import makeData from './../make-data';
-import { manageGenre } from '../../services/Utils/DB/DB';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CreateIcon from '@material-ui/icons/Create';
+import { getData } from '../../services/Utils/DB/DB';
 
-const ManageGenre = () => {
+const VideoGenre = () => {
   const [rows, setRows] = useState([]);
   const utoken = localStorage.getItem('utoken') || '';
   useEffect(() => {
-    manageGenre(utoken)
+    getData('/genres',utoken)
       .then((data) => {
         if (data) {
           setRows(data); 
@@ -22,27 +20,6 @@ const ManageGenre = () => {
         console.log(error);
       });
 
-    // firebase.child('admins').on('value', (snapshot) => {
-    //   console.log('HA');
-    //   console.log('Admin list', snapshot.val());
-    //   setRows(snapshot.val());
-    // });
-    // const url = 'https://adminapi.sabhatv-dev.mediasuite.in/';
-    // const token =
-    //   'AOvuKvQ5pnxAUMz4Kibc9W4vESMPxU5Xy4RuNb4hEcea_Ju0YpXAKguMdBe4b3609VNyASZkSBBWXSWqBfA4hK3Ld-P8FHxklcEkzw13qU-1eqzFq8K7v4cOSqq4Tz1YjReyZiHlzSN_Z1_d7hYRl4ALdVFP_Y-Xmjp-LjXvtqkjNvxSwXWkyI5uFu5TZ2zRgxTdzXBPXFmQ85GVDoSanSgL13yHSw6bSYCMzVkxRvisu9zCQ_fcKE0';
-    // axios
-    //   .get(url, {
-    //     headers: {
-    //       Authorization: 'Bearer ' + token,
-    //       'Access-Control-Allow-Origin': 'origin',
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   }, []);
 
   const columns = React.useMemo(
@@ -53,17 +30,6 @@ const ManageGenre = () => {
           {
             Header: 'Genre',
             accessor: 'genre',
-            sortable: true,
-          },
-        ],
-      },
-
-      {
-        Header: 'GenreId',
-        columns: [
-          {
-            Header: 'Genre ID',
-            accessor: 'genreId',
             sortable: true,
           },
         ],
@@ -84,27 +50,6 @@ const ManageGenre = () => {
           {
             Header: 'Date Of Creation',
             accessor: 'dateCreated',
-            sortable: true,
-          },
-        ],
-      },
-
-      {
-        Header: 'Date Of Update',
-        columns: [
-          {
-            Header: 'Date Of Previous Update',
-            accessor: 'updated date',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'Person Making Previous Update',
-        columns: [
-          {
-            Header: 'Person Making Previous Update',
-            accessor: 'updator',
             sortable: true,
           },
         ],
@@ -147,12 +92,12 @@ const ManageGenre = () => {
     <div>
       <ol className="breadcrumb float-xl-right">
         <li className="breadcrumb-item">
-          <Link to="/table/data">Home</Link>
+          <Link to="/">Dashboard</Link>
         </li>
         <li className="breadcrumb-item">
-          <Link to="/table/data">Tables</Link>
+          <Link to="/content-management/video-genre">Genres</Link>
         </li>
-        <li className="breadcrumb-item active">Data Tables</li>
+        <li className="breadcrumb-item active">View Genres</li>
       </ol>
       <h1 className="page-header">
         Genres <small>manage and approve the genres here.</small>
@@ -165,8 +110,8 @@ const ManageGenre = () => {
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                    <th className="width-150" {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div class="d-flex" style={{ minWidth: '150px' }}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      <div class="d-flex" style={{ minWidth: '1%' }}>
                         <span>{column.render('Header')}</span>
                         <span class="ml-auto">
                           {column.sortable ? (
@@ -195,14 +140,11 @@ const ManageGenre = () => {
                   return (
                     <tr key={rows[id].nativeLang}>
                       <td>{rows[id].genre}</td>
-                      <td>{rows[id].genreId}</td>
                       <td>{rows[id].createdBy}</td>
                       <td>{rows[id].createdAt}</td>
-                      <td>{rows[id].updatedAt}</td>
-                      <td>{rows[id].updatedBy}</td>
                       <td className="edit">
-                        <CreateIcon className="edit-icon"/>
-                        <DeleteIcon className="delete-icon"/>
+                        <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );
@@ -278,4 +220,4 @@ const ManageGenre = () => {
   );
 };
 
-export default ManageGenre;
+export default VideoGenre;

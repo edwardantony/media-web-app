@@ -17,6 +17,8 @@ import VideoBanners from './../pages/videos/Banners';
 import VideoLanguages from './../pages/videos/Languages';
 import VideoGenre from './../pages/videos/Genre';
 
+import Policies from './../pages/policies/Policies';
+
 
 
 const routes = [
@@ -100,10 +102,17 @@ const routes = [
     component: () => <VideoLanguages />,
   },
   {
-    path: '/content-management/video-genere',
+    path: '/content-management/video-genre',
     exact: true,
     title: 'Manage Genre',
     component: () => <VideoGenre />,
+  },
+
+  {
+    path: '/page/view-policies',
+    exact: true,
+    title: 'View Policies',
+    component: () => <Policies />,
   },
 ];
 

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
-import { Panel, PanelHeader, PanelBody } from '../../components/panel/panel.jsx';
-import makeData from '../make-data';
-import { getData } from '../../services/Utils/DB/DB';
+import { Panel, PanelHeader, PanelBody } from './../../components/panel/panel.jsx';
+import makeData from './../make-data';
+import { getData } from './../../services/Utils/DB/DB';
 
-const Subscribers = () => {
+
+const Policies = () => {
   const [rows, setRows] = useState([]);
   const utoken = localStorage.getItem('utoken') || '';
   useEffect(() => {
-    getData('/subscribers',utoken)
+    getData('/policies', utoken)
       .then((data) => {
         if (data) {
           setRows(data);
-          console.log(data);
+          console.log('Manage', data);
         }
       })
       .catch((error) => {
@@ -24,41 +25,31 @@ const Subscribers = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: 'Category',
         columns: [
           {
-            Header: 'First Name',
-            accessor: 'firstName',
+            Header: 'Category',
+            accessor: 'category',
             sortable: true,
           },
         ],
       },
       {
-        Header: 'Email',
+        Header: 'Content Creator',
         columns: [
           {
-            Header: 'Email',
-            accessor: 'email',
+            Header: 'Content Creator',
+            accessor: 'contentCreator',
             sortable: true,
           },
         ],
       },
       {
-        Header: 'Phone Number',
+        Header: 'Date Of Creation',
         columns: [
           {
-            Header: 'Phone Number',
-            accessor: 'PhoneNumber',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'Status',
-        columns: [
-          {
-            Header: 'Status',
-            accessor: 'age',
+            Header: 'Date Of Creation',
+            accessor: 'dateCreated',
             sortable: true,
           },
         ],
@@ -104,15 +95,15 @@ const Subscribers = () => {
           <Link to="/">Dashboard</Link>
         </li>
         <li className="breadcrumb-item">
-          <Link to="/subscriber/view-subscribers">Subscribers</Link>
+          <Link to="/page/view-policies">Policies</Link>
         </li>
-        <li className="breadcrumb-item active">View Subscribers</li>
+        <li className="breadcrumb-item active">View Policies</li>
       </ol>
       <h1 className="page-header">
-        Subscribers <small>manage and approve the subscribers here.</small>
+        Policies <small>manage and edit the policies here.</small>
       </h1>
       <Panel>
-        <PanelHeader>All Subscribers Lists</PanelHeader>
+        <PanelHeader>All Policies Lists</PanelHeader>
         <div class="table-responsive">
           <table class="table table-striped table-bordered" {...getTableProps()}>
             <thead>
@@ -147,17 +138,10 @@ const Subscribers = () => {
               <tbody {...getTableBodyProps()}>
                 {Object.keys(rows).map((id) => {
                   return (
-                    <tr key={rows[id].displayName}>
-                      <td>{rows[id].displayName}</td>
-                      <td>{rows[id].email}</td>
-                      <td>{rows[id].phoneNumber}</td>
-                      <td>
-                        {rows[id].emailVerified ? (
-                          <span class="label label-green">Confirmed</span>
-                        ) : (
-                          <span class="label label-danger">Not Confirmed</span>
-                        )}
-                      </td>
+                    <tr key={rows[id].nativeLang}>
+                      <td>{rows[id].category}</td>
+                      <td>{rows[id].createdBy}</td>
+                      <td>{rows[id].updatedAt}</td>
                       <td className="edit">
                         <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
                         <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
@@ -236,4 +220,4 @@ const Subscribers = () => {
   );
 };
 
-export default Subscribers;
+export default Policies;
