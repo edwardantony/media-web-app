@@ -16,6 +16,7 @@ import VideoCategories from './../pages/videos/Categories';
 import VideoBanners from './../pages/videos/Banners';
 import VideoLanguages from './../pages/videos/Languages';
 import VideoGenre from './../pages/videos/Genre';
+import { AddSingleVideo } from '../pages/videos/AddSingleVideo.js';
 
 import Policies from './../pages/policies/Policies';
 import { AddPolicy } from './../pages/policies/AddPolicy';
@@ -76,6 +77,12 @@ const routes = [
     exact: true,
     title: 'Single Videos',
     component: () => <VideoSingle />,
+  },
+  {
+    path: '/content-management/single-video/add',
+    exact: true,
+    title: 'Add Single Videos',
+    component: () => <AddSingleVideo />,
   },
   {
     path: '/content-management/series-video/view',

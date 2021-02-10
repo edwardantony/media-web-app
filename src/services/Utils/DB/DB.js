@@ -10,6 +10,7 @@ export const getData = async (endpoint, token) => {
     },
   });
   return data; 
+
 };
 
 

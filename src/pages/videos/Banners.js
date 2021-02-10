@@ -26,6 +26,7 @@ const Banners = () => {
     () => [
       {
         Header: 'Image',
+
         columns: [
           {
             Header: '',
@@ -64,12 +65,22 @@ const Banners = () => {
           },
         ],
       },
+      // {
+      //   Header: 'Content Creator',
+      //   columns: [
+      //     {
+      //       Header: 'Content Creator',
+      //       accessor: 'contentCreator',
+      //       sortable: true,
+      //     },
+      //   ],
+      // },
       {
-        Header: 'Content Creator',
+        Header: 'Date Of Creation',
         columns: [
           {
-            Header: 'Content Creator',
-            accessor: 'contentCreator',
+            Header: 'Date Of Creation',
+            accessor: 'createdAt',
             sortable: true,
           },
         ],
@@ -88,8 +99,8 @@ const Banners = () => {
         Header: 'Date Of Creation',
         columns: [
           {
-            Header: 'Date Of Creation',
-            accessor: 'dateCreated',
+            Header: 'Status',
+            accessor: 'status',
             sortable: true,
           },
         ],
@@ -154,29 +165,29 @@ const Banners = () => {
       </h1>
       <Panel>
         <PanelHeader>All Video Categories Lists</PanelHeader>
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered" {...getTableProps()}>
+        <div className="table-responsive">
+          <table className="table table-striped table-bordered" {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
                     <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div class="d-flex" style={{ minWidth: '1%' }}>
+                      <div className="d-flex" style={{ minWidth: '1%' }}>
                         <span>{column.render('Header')}</span>
-                        <span class="ml-auto">
+                        <span className="ml-auto">
                           {column.sortable ? (
                             column.isSorted ? (
                               column.isSortedDesc ? (
                                 <i className="fa fa-sort-down fa-fw f-s-14 text-blue"></i>
                               ) : (
-                                <i className="fa fa-sort-up fa-fw f-s-14 text-blue"></i>
-                              )
+                                  <i className="fa fa-sort-up fa-fw f-s-14 text-blue"></i>
+                                )
                             ) : (
-                              <i className="fa fa-sort fa-fw f-s-14 opacity-3"></i>
-                            )
+                                <i className="fa fa-sort fa-fw f-s-14 opacity-3"></i>
+                              )
                           ) : (
-                            ''
-                          )}
+                              ''
+                            )}
                         </span>
                       </div>
                     </th>
@@ -205,9 +216,10 @@ const Banners = () => {
                           <span class="label label-danger">{rows[id].target.status}</span>
                         )}
                       </td>
+
                       <td className="edit">
-                        <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                        <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
+                        <a href="javascript:;" className="btn btn-primary btn-icon btn-circle btn-sm"><i className="fas fa-pencil-alt"></i></a>
+                        <a href="javascript:;" className="btn btn-danger btn-icon btn-circle btn-sm"><i className="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );
@@ -216,9 +228,9 @@ const Banners = () => {
             )}
           </table>
         </div>
-        <hr class="m-0" />
+        <hr className="m-0" />
         <PanelBody>
-          <div class="d-flex align-items-center justify-content-center">
+          <div className="d-flex align-items-center justify-content-center">
             <ul className="pagination mb-0">
               <li className="page-item">
                 <button className="page-link" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
@@ -249,8 +261,8 @@ const Banners = () => {
                 </button>
               </li>
             </ul>
-            <div class="ml-3 mr-1">Go to page:</div>
-            <div class="width-50 mx-2">
+            <div className="ml-3 mr-1">Go to page:</div>
+            <div className="width-50 mx-2">
               <input
                 className="form-control"
                 type="number"
