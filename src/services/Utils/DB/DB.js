@@ -68,6 +68,26 @@ export const manageCategories = async (token) => {
 
   return data;
 };
+
+export const manageBanners = async (token) => {
+  var response;
+  var config = {
+    method: 'get',
+    url: 'https://adminapi.sabhatv-dev.mediasuite.in/banners',
+    headers: { 
+      Authorization: `Bearer ${token}`,
+    }
+  };
+  axios(config)
+  .then(function (response) {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  return response.data;
+};
+
 export const manageAdminRoles = async (token) => {
   const url = 'https://adminapi.sabhatv-dev.mediasuite.in/roles';
 

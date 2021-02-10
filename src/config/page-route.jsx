@@ -12,9 +12,11 @@ import Subscribers from '../pages/subscribers/Subscribers';
 
 import VideoSingle from '../pages/videos/SingleVideos';
 import VideoSeries from './../pages/videos/SeriesVideos';
+import VideoCategories from './../pages/videos/Categories';
+import VideoBanners from './../pages/videos/Banners';
 import VideoLanguages from './../pages/videos/Languages';
 import VideoGenre from './../pages/videos/Genre';
-import VideoCategories from './../pages/videos/Categories';
+
 
 
 const routes = [
@@ -78,11 +80,18 @@ const routes = [
     title: 'Series Videos',
     component: () => <VideoSeries />,
   },
+  
+  {
+    path: '/content-management/video-category',
+    exact: true,
+    title: 'Manage Genre',
+    component: () => <VideoCategories />,
+  },
   {
     path: '/content-management/video-banners',
     exact: true,
     title: 'Manage Language',
-    component: () => <VideoLanguages />,
+    component: () => <VideoBanners />,
   },
   {
     path: '/content-management/video-language',
@@ -95,12 +104,6 @@ const routes = [
     exact: true,
     title: 'Manage Genre',
     component: () => <VideoGenre />,
-  },
-  {
-    path: '/content-management/video-category',
-    exact: true,
-    title: 'Manage Genre',
-    component: () => <VideoCategories />,
   },
 ];
 
