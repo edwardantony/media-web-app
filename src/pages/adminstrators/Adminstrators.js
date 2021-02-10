@@ -134,12 +134,12 @@ const Adminstrators = () => {
     <div>
       <ol className="breadcrumb float-xl-right">
         <li className="breadcrumb-item">
-          <Link to="/table/data">Home</Link>
+          <Link to="/">Dashboard</Link>
         </li>
         <li className="breadcrumb-item">
-          <Link to="/table/data">Tables</Link>
+          <Link to="/adminstrator/view-adminstrators">Adminstrators</Link>
         </li>
-        <li className="breadcrumb-item active">Data Tables</li>
+        <li className="breadcrumb-item active">View Subscribers</li>
       </ol>
       <h1 className="page-header">
         Adminstrators <small>manage and approve the admins here.</small>
@@ -152,8 +152,8 @@ const Adminstrators = () => {
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                    <th className="width-150" {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div class="d-flex" style={{ minWidth: '150px' }}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      <div class="d-flex" style={{ minWidth: '1%' }}>
                         <span>{column.render('Header')}</span>
                         <span class="ml-auto">
                           {column.sortable ? (
@@ -185,18 +185,18 @@ const Adminstrators = () => {
                       <td>{rows[id].email}</td>
                       <td>{rows[id].phoneNumber}</td>
                       <td>
-                        {rows[id].emailVerified ? (
-                          <h5 className="status status-confirmed">Confirmed</h5>
+                      {rows[id].emailVerified ? (
+                          <span class="label label-green">Confirmed</span>
                         ) : (
-                          <h5 className="status status-notconfirmed">Not Confirmed</h5>
+                          <span class="label label-danger">Not Confirmed</span>
                         )}
                       </td>
                       <td>
-                        <h5 className="role">{rows[id].roles[0].toUpperCase()}</h5>
+                        <span class="badge badge-default badge-square">{rows[id].roles[0].toUpperCase()}</span>
                       </td>
                       <td className="edit">
-                        <CreateIcon className="edit-icon"/>
-                        <DeleteIcon className="delete-icon"/>
+                        <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );

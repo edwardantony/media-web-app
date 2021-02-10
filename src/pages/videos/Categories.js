@@ -58,16 +58,6 @@ const ManageCategories = () => {
         ],
       },
       {
-        Header: 'Category ID',
-        columns: [
-          {
-            Header: 'Category ID',
-            accessor: 'categoryid',
-            sortable: true,
-          },
-        ],
-      },
-      {
         Header: 'Content Creator',
         columns: [
           {
@@ -83,27 +73,6 @@ const ManageCategories = () => {
           {
             Header: 'Date Of Creation',
             accessor: 'dateCreated',
-            sortable: true,
-          },
-        ],
-      },
-
-      {
-        Header: 'Date Of Update',
-        columns: [
-          {
-            Header: 'Date Of Previous Update',
-            accessor: 'updated date',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'Person Making Previous Update',
-        columns: [
-          {
-            Header: 'Person Making Previous Update',
-            accessor: 'updator',
             sortable: true,
           },
         ],
@@ -146,15 +115,15 @@ const ManageCategories = () => {
     <div>
       <ol className="breadcrumb float-xl-right">
         <li className="breadcrumb-item">
-          <Link to="/table/data">Home</Link>
+          <Link to="/">Dashboard</Link>
         </li>
         <li className="breadcrumb-item">
-          <Link to="/table/data">Tables</Link>
+          <Link to="/content-management/video-category">Video Categories</Link>
         </li>
-        <li className="breadcrumb-item active">Data Tables</li>
+        <li className="breadcrumb-item active">View Categories</li>
       </ol>
       <h1 className="page-header">
-        Video Categories <small>manage and approve the video categories here.</small>
+        Video Categories <small>manage and edit the video categories here.</small>
       </h1>
       <Panel>
         <PanelHeader>All Video Categories Lists</PanelHeader>
@@ -164,8 +133,8 @@ const ManageCategories = () => {
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                    <th className="width-150" {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div class="d-flex" style={{ minWidth: '150px' }}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      <div class="d-flex" style={{ minWidth: '1%' }}>
                         <span>{column.render('Header')}</span>
                         <span class="ml-auto">
                           {column.sortable ? (
@@ -194,14 +163,11 @@ const ManageCategories = () => {
                   return (
                     <tr key={rows[id].nativeLang}>
                       <td>{rows[id].category}</td>
-                      <td>{rows[id].categoryId}</td>
                       <td>{rows[id].createdBy}</td>
-                      <td>{rows[id].createdAt}</td>
                       <td>{rows[id].updatedAt}</td>
-                      <td>{rows[id].updatedBy}</td>
                       <td className="edit">
-                        <CreateIcon className="edit-icon"/>
-                        <DeleteIcon className="delete-icon"/>
+                        <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );

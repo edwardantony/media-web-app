@@ -48,16 +48,6 @@ const ManageLanguages = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Native Language',
-        columns: [
-          {
-            Header: 'Natuve Language',
-            accessor: 'navtiveLanguage',
-            sortable: true,
-          },
-        ],
-      },
-      {
         Header: 'Language',
         columns: [
           {
@@ -68,11 +58,11 @@ const ManageLanguages = () => {
         ],
       },
       {
-        Header: 'LanguageID',
+        Header: 'Native Language',
         columns: [
           {
-            Header: 'LanguageID',
-            accessor: 'languageID',
+            Header: 'Natuve Language',
+            accessor: 'navtiveLanguage',
             sortable: true,
           },
         ],
@@ -93,28 +83,6 @@ const ManageLanguages = () => {
           {
             Header: 'Date Of Creation',
             accessor: 'dateCreated',
-            sortable: true,
-          },
-        ],
-      },
-
-      {
-        Header: 'Date Of Update',
-        columns: [
-          {
-            Header: 'Date Of Previous Update',
-            accessor: 'updated date',
-            sortable: true,
-          },
-        ],
-      },
-
-      {
-        Header: 'Person Making Previous Update',
-        columns: [
-          {
-            Header: 'Person Making Previous Update',
-            accessor: 'updator',
             sortable: true,
           },
         ],
@@ -157,15 +125,15 @@ const ManageLanguages = () => {
     <div>
       <ol className="breadcrumb float-xl-right">
         <li className="breadcrumb-item">
-          <Link to="/table/data">Home</Link>
+          <Link to="/">Dashboard</Link>
         </li>
         <li className="breadcrumb-item">
-          <Link to="/table/data">Tables</Link>
+          <Link to="/content-management/video-category">Video Languages</Link>
         </li>
-        <li className="breadcrumb-item active">Data Tables</li>
+        <li className="breadcrumb-item active">View Languages</li>
       </ol>
       <h1 className="page-header">
-        Video Languages <small>manage and approve the Video Languages here.</small>
+        Video Languages <small>manage and edit the Video Languages here.</small>
       </h1>
       <Panel>
         <PanelHeader>All Video Languages Lists</PanelHeader>
@@ -175,8 +143,8 @@ const ManageLanguages = () => {
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                    <th className="width-150" {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div class="d-flex" style={{ minWidth: '150px' }}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      <div class="d-flex" style={{ minWidth: '1%' }}>
                         <span>{column.render('Header')}</span>
                         <span class="ml-auto">
                           {column.sortable ? (
@@ -203,17 +171,14 @@ const ManageLanguages = () => {
               <tbody {...getTableBodyProps()}>
                 {Object.keys(rows).map((id) => {
                   return (
-                    <tr key={rows[id].nativeLang}>
-                      <td>{rows[id].nativeLang}</td>
+                    <tr key={rows[id].nativeLang}>                      
                       <td>{rows[id].lang}</td>
-                      <td>{rows[id].langId}</td>
+                      <td>{rows[id].nativeLang}</td>
                       <td>{rows[id].createdBy}</td>
                       <td>{rows[id].createdAt}</td>
-                      <td>{rows[id].updatedAt}</td>
-                      <td>{rows[id].updatedBy}</td>
                       <td className="edit">
-                        <CreateIcon className="edit-icon"/>
-                        <DeleteIcon className="delete-icon"/>
+                        <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );

@@ -107,26 +107,6 @@ const SingleVideo = () => {
           },
         ],
       },
-      {
-        Header: 'Likes',
-        columns: [
-          {
-            Header: 'Likes',
-            accessor: 'likes',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'DisLikes',
-        columns: [
-          {
-            Header: 'DisLikes',
-            accessor: 'disLikes',
-            sortable: true,
-          },
-        ],
-      },
 
       {
         Header: 'Status',
@@ -176,15 +156,15 @@ const SingleVideo = () => {
     <div>
       <ol className="breadcrumb float-xl-right">
         <li className="breadcrumb-item">
-          <Link to="/table/data">Home</Link>
+          <Link to="/">Dashboard</Link>
         </li>
         <li className="breadcrumb-item">
-          <Link to="/table/data">Tables</Link>
+          <Link to="/content-management/single-video/view">Videos</Link>
         </li>
-        <li className="breadcrumb-item active">Data Tables</li>
+        <li className="breadcrumb-item active">Single Videos</li>
       </ol>
       <h1 className="page-header">
-        Single Videos <small>manage and approve the subscribers here.</small>
+        Single Video's <small>manage and approve the single videos here.</small>
       </h1>
       <Panel>
         <PanelHeader>All Single Videos Lists</PanelHeader>
@@ -194,8 +174,8 @@ const SingleVideo = () => {
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                    <th className="width-150" {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div class="d-flex" style={{ minWidth: '150px' }}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      <div class="d-flex" style={{ minWidth: '1%' }}>
                         <span>{column.render('Header')}</span>
                         <span class="ml-auto">
                           {column.sortable ? (
@@ -229,12 +209,16 @@ const SingleVideo = () => {
                       <td>{rows[id].createdBy}</td>
                       <td>{rows[id].createdAt}</td>
                       <td>{rows[id].releaseDate}</td>
-                      <td>{rows[id].likes}</td>
-                      <td>{rows[id].dislikes}</td>
-                      <td>{rows[id].status}</td>
+                      <td>
+                        {rows[id].status ? (
+                          <span class="label label-green">Published</span>
+                        ) : (
+                          <span class="label label-danger">Un Published</span>
+                        )}
+                      </td>
                       <td className="edit">
-                        <CreateIcon className="edit-icon"/>
-                        <DeleteIcon className="delete-icon"/>
+                        <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );
