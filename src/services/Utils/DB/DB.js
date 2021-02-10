@@ -68,6 +68,29 @@ export const manageCategories = async (token) => {
 
   return data;
 };
+
+export const manageBanners = async (token) => {
+  var response;
+  var url ='https://adminapi.sabhatv-dev.mediasuite.in';
+  var endpoint ='/banners';
+  var config = {
+    method: 'get',
+    url: url+endpoint,
+    headers: { 
+      Authorization: `Bearer ${token}`,
+    }
+  };
+  axios(config)
+  .then(function (response) {
+    console.log(response.data);
+    return response.data;
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  
+};
+
 export const manageAdminRoles = async (token) => {
   const url = 'https://adminapi.sabhatv-dev.mediasuite.in/roles';
 
@@ -83,6 +106,17 @@ export const manageAdminRoles = async (token) => {
 export const addAdmin = async (form_data, token) => {
   const url = 'https://adminapi.sabhatv-dev.mediasuite.in/admins';
 
+  const response = await axios.post(url, form_data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response;
+};
+
+export const addAdminstrator = async (form_data, token) => {
+  const url = 'https://adminapi.sabhatv-dev.mediasuite.in/admins';
   const response = await axios.post(url, form_data, {
     headers: {
       Authorization: `Bearer ${token}`,

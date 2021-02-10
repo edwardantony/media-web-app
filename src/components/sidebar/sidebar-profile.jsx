@@ -6,8 +6,12 @@ class SidebarProfile extends React.Component {
 
 	constructor(props) {
 		super(props);
+		const token = localStorage.getItem("utoken")
+		let jwt = require('jsonwebtoken');
+		const currentUser = token ? jwt.decode(token) : false;
 		this.state = {
-			profileActive: 0
+			profileActive: 0,
+			currentUser: currentUser
 		};
 		this.handleProfileExpand = this.handleProfileExpand.bind(this);
 	}
@@ -32,8 +36,10 @@ class SidebarProfile extends React.Component {
 								</div>
 								<div className="info">
 									<b className="caret pull-right"></b>
-									Edward Antony
-									<small>Adminstrator</small>
+									{this.state.currentUser.name}
+									<small>
+										<span class="label label-light">{this.state.currentUser.roles}</span>
+									</small>
 								</div>
 							</Link>
 						</li>
