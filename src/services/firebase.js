@@ -9,7 +9,7 @@ const config = {
   measurementId: 'G-TC1KSLP170',
 };
 
-const fireDb = firebase.initializeApp(config);
+export const fireDb = firebase.initializeApp(config);
 export const fireDbAuth = fireDb.auth();
 export default fireDb.database().ref();
 

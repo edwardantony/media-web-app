@@ -159,16 +159,16 @@ const ManageGenre = () => {
       </h1>
       <Panel>
         <PanelHeader>All Genres Lists</PanelHeader>
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered" {...getTableProps()}>
+        <div className="table-responsive">
+          <table className="table table-striped table-bordered" {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
                     <th className="width-150" {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div class="d-flex" style={{ minWidth: '150px' }}>
+                      <div className="d-flex" style={{ minWidth: '150px' }}>
                         <span>{column.render('Header')}</span>
-                        <span class="ml-auto">
+                        <span className="ml-auto">
                           {column.sortable ? (
                             column.isSorted ? (
                               column.isSortedDesc ? (
@@ -211,9 +211,9 @@ const ManageGenre = () => {
             )}
           </table>
         </div>
-        <hr class="m-0" />
+        <hr className="m-0" />
         <PanelBody>
-          <div class="d-flex align-items-center justify-content-center">
+          <div className="d-flex align-items-center justify-content-center">
             <ul className="pagination mb-0">
               <li className="page-item">
                 <button className="page-link" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
@@ -244,8 +244,8 @@ const ManageGenre = () => {
                 </button>
               </li>
             </ul>
-            <div class="ml-3 mr-1">Go to page:</div>
-            <div class="width-50 mx-2">
+            <div className="ml-3 mr-1">Go to page:</div>
+            <div className="width-50 mx-2">
               <input
                 className="form-control"
                 type="number"

@@ -114,8 +114,8 @@ export const AddSubscriber = () => {
         <PanelBody>
           <Row>
             <Col md="8">
-              <div class="card">
-                <div class="card-body">
+              <div className="card">
+                <div className="card-body">
                   <Form>
                     <Row>
                       <Col>
@@ -179,7 +179,7 @@ export const AddSubscriber = () => {
                     </Row>
                   </Form>
                 </div>
-                <div class="card-footer">
+                <div className="card-footer">
                   <Row>
                     <Col>
                       <div className="pull-right">

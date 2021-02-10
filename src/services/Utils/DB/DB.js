@@ -70,26 +70,53 @@ export const manageCategories = async (token) => {
 };
 
 export const manageBanners = async (token) => {
-  var response;
-  var url ='https://adminapi.sabhatv-dev.mediasuite.in';
-  var endpoint ='/banners';
-  var config = {
-    method: 'get',
-    url: url+endpoint,
-    headers: { 
+  const url = 'https://adminapi.sabhatv-dev.mediasuite.in/banners';
+
+  const { data } = await axios.get(url, {
+    headers: {
       Authorization: `Bearer ${token}`,
-    }
-  };
-  axios(config)
-  .then(function (response) {
-    console.log(response.data);
-    return response.data;
-  })
-  .catch(function (error) {
-    console.log(error);
+    },
   });
+  return data;
   
 };
+// export const manageBanners = async (token) => {
+//   // var response;
+//   var url = 'https://adminapi.sabhatv-dev.mediasuite.in';
+//   var endpoint = '/banners';
+//   var config = {
+//     method: 'get',
+//     url: url + endpoint,
+//     headers: {
+//       'Authorization': `Bearer ${token}`,
+//       'Content-Type': 'text/plain',
+//       'Access-Control-Allow-Origin': true,
+//     }
+//   };
+//   // axios(config)
+//   //   .then(function (response) {
+//   //     console.log(response.data);
+//   //     return response.data;
+//   //   })
+//   //   .catch(function (error) {
+//   //     console.log(error);
+//   //   });
+//   let response = () => {
+//     return new Promise(function (resolve, reject) {
+//       axios(config)
+//         .then(function (response) {
+//           resolve(response);
+//           console.log(response.data);
+//           return response.data;
+//         })
+//         .catch(function (error) {
+//           console.log(error);
+//         });
+//     });
+//   };
+//   let responseData = await response();
+//   console.log(responseData.data);
+// };
 
 export const manageAdminRoles = async (token) => {
   const url = 'https://adminapi.sabhatv-dev.mediasuite.in/roles';
