@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Panel, PanelBody, PanelFooter, PanelHeader } from '../../components/panel/panel';
-import { Button, Input, FormGroup, Label, Form, Row, Col } from 'reactstrap';
+import { Button, Input, FormGroup, Label, Form, Row, Col, CustomInput } from 'reactstrap';
 import { Multiselect } from 'multiselect-react-dropdown';
 import InputMask from 'react-input-mask';
 // import { addSubscriber } from '../../services/Utils/DB/DB';
 import FileUploader from "react-firebase-file-uploader";
 import { fireDb } from '../../services/firebase';
+import * as moment from 'moment';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const data = [
     { role: 'subscriber', id: 1 },
@@ -23,6 +26,28 @@ export const AddSingleVideo = () => {
     const [progress, setProgress] = useState(0);
     const [image, setImage] = useState("");
     const [imageURL, setImageURL] = useState("");
+    const [expiryDate, setExpiryDate] = useState("");
+    const [releaseDate, setReleaseDate] = useState("");
+
+    //video upload
+    const [fileName, setFileName] = useState("");
+    const [invalidFile, setInvalidFile] = useState(false);
+    const handleFileChange =({target: {files}}) => {
+        const cancel = !files.length;
+        if (cancel) return;
+    
+        const [{ size, name }] = files;
+        const maxSize = 50000;
+    
+        if (size < maxSize) {
+          setFileName(name);
+          setInvalidFile(false);
+        } else {
+          setFileName('');
+          setInvalidFile(true)
+        }
+      }
+
 
     const onChangeTitle = (e) => {
         const first = e.target.value;
@@ -40,6 +65,13 @@ export const AddSingleVideo = () => {
         const synopsis = e.target.value;
         setSynopsis(synopsis);
     }
+
+    const onChangeExpiryDate = (date) => {
+        setExpiryDate(date);
+    };
+    const onChangeReleaseDate = (date) => {
+        setReleaseDate(date);
+    };
     const handleMultiselect = (selectedList, selectedItem) => {
         const updatedRoles = [...user_roles, selectedItem.role];
         setUserRoles(updatedRoles);
@@ -58,6 +90,8 @@ export const AddSingleVideo = () => {
             category: category,
             synopsis: synopsis,
             roles: user_roles,
+            expiry_date: expiryDate,
+            releaseDate: releaseDate,
             genre: genre,
         }
 
@@ -149,36 +183,6 @@ export const AddSingleVideo = () => {
                                     <Row>
                                         <Col>
                                             <FormGroup>
-                                                <Label for="category">Language</Label>
-                                                <Input
-                                                    type="select"
-                                                    name="category"
-                                                    id="category"
-                                                    // placeholder="Product Name"
-                                                    value={category}
-                                                    onChange={onChangeCategory}
-                                                // className={!isInvalidName ? "" : "is-invalid"}
-                                                />
-                                            </FormGroup>
-                                        </Col>
-                                        <Col>
-                                            <FormGroup>
-                                                <Label for="genre">Maturity Rating</Label>
-                                                <Input
-                                                    type="select"
-                                                    name="genre"
-                                                    id="genre"
-                                                    // placeholder="Product Name"
-                                                    value={genre}
-                                                    onChange={onChangeGenre}
-                                                // className={!isInvalidName ? "" : "is-invalid"}
-                                                />
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            <FormGroup>
                                                 <Label for="category">Category</Label>
                                                 <Input
                                                     type="select"
@@ -209,9 +213,9 @@ export const AddSingleVideo = () => {
                                     <Row>
                                         <Col>
                                             <FormGroup>
-                                                <Label for="category">Releasing Date</Label>
+                                                <Label for="category">Language</Label>
                                                 <Input
-                                                    type="date"
+                                                    type="select"
                                                     name="category"
                                                     id="category"
                                                     // placeholder="Product Name"
@@ -223,17 +227,37 @@ export const AddSingleVideo = () => {
                                         </Col>
                                         <Col>
                                             <FormGroup>
-                                                <Label for="genre">Expiry Date</Label>
+                                                <Label for="genre">Maturity Rating</Label>
                                                 <Input
-                                                    type="date"
+                                                    type="select"
                                                     name="genre"
                                                     id="genre"
                                                     // placeholder="Product Name"
                                                     value={genre}
                                                     onChange={onChangeGenre}
                                                 // className={!isInvalidName ? "" : "is-invalid"}
-                                                />
+                                                >
+                                                    <option value="Everyone">Everyone</option>
+                                                    <option value="10+"> 10+ </option>
+                                                    <option value="Teen"> Teen</option>
+                                                    <option value="17+"> 17+</option>
+                                                    <option value="18+"> 18+</option>
+                                                </Input>
                                             </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col md={6}>
+                                            <FormGroup>
+                                                <Label for="releaseDate">Releasing Date</Label>
+                                                <DatePicker selected={releaseDate} onChange={onChangeReleaseDate} className="form-control" wrapperClassName="d-block" />
+                                            </FormGroup>
+                                        </Col>
+                                        <Col>
+                                            {/* <FormGroup>
+                                                <Label for="genre">Expiry Date</Label>
+                                                <DatePicker selected={expiryDate} onChange={onChangeExpiryDate} className="form-control" wrapperClassName="d-block" />
+                                            </FormGroup> */}
                                         </Col>
                                     </Row>
                                     <Row>
@@ -262,12 +286,62 @@ export const AddSingleVideo = () => {
                                     </Row>
                                     <Row>
                                         <Col>
+                                            <div style={{ height: "20px" }}>
+                                                {/* {isUploading && <p>Progress: {progress}</p>} */}
+                                            </div>
+                                            <FormGroup>
+                                                <CustomInput
+                                                    type="file"
+                                                    id="videoFileBrowser"
+                                                    name="videoFile"
+                                                    label={fileName || 'choose an image file'}
+                                                    onChange={handleFileChange}
+                                                    invalid={invalidFile} />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <h4>Upload Thumbnail</h4>
+                                        </Col>
+                                    </Row>
+                                    <Row className="mb-2">
+                                        <Col>
+                                            <div className="border rounded m-auto" style={{ height: "150px", width: "100px" }}>
+                                                <img src={require("./../../assets/logo/logo-icon.png")} width={100} height={150} />
+                                            </div>
+                                        </Col>
+                                        <Col>
                                             <FormGroup>
                                                 <Label for="synopsis">video</Label>
                                                 {isUploading && <p>Progress: {progress}</p>}
                                                 {imageURL && <img src={imageURL} />}
                                                 <FileUploader
-                                                    accept="image/*"
+                                                    // accept="image/*"
+                                                    name="image"
+                                                    randomizeFilename
+                                                    storageRef={fireDb.storage().ref("images")}
+                                                    onUploadStart={handleUploadStart}
+                                                    onUploadError={handleUploadError}
+                                                    onUploadSuccess={handleUploadSuccess}
+                                                    onProgress={handleProgress}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <div className="border rounded m-auto" style={{ height: "100px", width: "150px" }}>
+                                                <img src={require("./../../assets/logo/logo-icon.png")} width={150} height={100} />
+                                            </div>
+                                        </Col>
+                                        <Col>
+                                            <FormGroup>
+                                                <Label for="synopsis">video</Label>
+                                                {isUploading && <p>Progress: {progress}</p>}
+                                                {imageURL && <img src={imageURL} />}
+                                                <FileUploader
+                                                    // accept="image/*"
                                                     name="image"
                                                     randomizeFilename
                                                     storageRef={fireDb.storage().ref("images")}
