@@ -65,16 +65,6 @@ const Banners = () => {
           },
         ],
       },
-      // {
-      //   Header: 'Content Creator',
-      //   columns: [
-      //     {
-      //       Header: 'Content Creator',
-      //       accessor: 'contentCreator',
-      //       sortable: true,
-      //     },
-      //   ],
-      // },
       {
         Header: 'Date Of Creation',
         columns: [
@@ -91,16 +81,6 @@ const Banners = () => {
           {
             Header: 'Category',
             accessor: 'category',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'Date Of Creation',
-        columns: [
-          {
-            Header: 'Status',
-            accessor: 'status',
             sortable: true,
           },
         ],
@@ -164,7 +144,7 @@ const Banners = () => {
         Video Banners <small>manage and edit the video banners here.</small>
       </h1>
       <Panel>
-        <PanelHeader>All Video Categories Lists</PanelHeader>
+        <PanelHeader noButton={true}>All Video Banners Lists</PanelHeader>
         <div className="table-responsive">
           <table className="table table-striped table-bordered" {...getTableProps()}>
             <thead>

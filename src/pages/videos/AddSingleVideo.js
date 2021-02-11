@@ -10,44 +10,70 @@ import { fireDb } from '../../services/firebase';
 import * as moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+// import DynamicInputs from '../../components/dynamicInputs/DynamicInputs';
 
-const data = [
-    { role: 'subscriber', id: 1 },
-    // { role: 'Content Approver', id: 3 },
-    // { role: 'Super Admin', id: 4 },
-];
 export const AddSingleVideo = () => {
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
     const [genre, setGenre] = useState("");
+    const [language, setLanguage] = useState("");
+    const [maturity, setMaturity] = useState("");
     const [synopsis, setSynopsis] = useState("");
-    const [user_roles, setUserRoles] = useState([]);
-    const [isUploading, setIsUploading] = useState(false);
-    const [progress, setProgress] = useState(0);
-    const [image, setImage] = useState("");
-    const [imageURL, setImageURL] = useState("");
     const [expiryDate, setExpiryDate] = useState("");
     const [releaseDate, setReleaseDate] = useState("");
+    const [castCrewData, setCastCrewData] = useState([]);
 
     //video upload
     const [fileName, setFileName] = useState("");
     const [invalidFile, setInvalidFile] = useState(false);
     const handleFileChange =({target: {files}}) => {
+        console.log(files);
         const cancel = !files.length;
         if (cancel) return;
     
         const [{ size, name }] = files;
-        const maxSize = 50000;
+        // const maxSize = 50000;
     
-        if (size < maxSize) {
+        // if (size < maxSize) {
           setFileName(name);
           setInvalidFile(false);
-        } else {
-          setFileName('');
-          setInvalidFile(true)
-        }
+        // } else {
+        //   setFileName('');
+        //   setInvalidFile(true)
+        // }
+      }
+    //image file upload
+    const [imgPortraitName, setImgPortraitName] = useState("");
+    const [imgPortraitFile, setImgPortraitFile] = useState(null);
+    const [invalidImgPortrait, setInvalidImgPortrait] = useState(false);
+    const handlePortraitChange =({target: {files}}) => {
+        console.log(files);
+        const cancel = !files.length;
+        if (cancel) return;
+        
+        setImgPortraitFile(URL.createObjectURL(files[0]))
+        const [{ size, name }] = files;
+        setImgPortraitName(name);
+        setInvalidImgPortrait(false);
+      }
+    //image file upload
+    const [imgLandscapeName, setImgLandscapeName] = useState("");
+    const [imgLandscapeFile, setImgLandscapeFile] = useState(null);
+    const [invalidImgLandscape, setInvalidImgLandscape] = useState(false);
+    const handleLandscapeChange =({target: {files}}) => {
+        const cancel = !files.length;
+        if (cancel) return;
+    
+        setImgLandscapeFile(URL.createObjectURL(files[0]))
+        const [{ size, name }] = files;
+        setImgLandscapeName(name);
+        setInvalidImgLandscape(false);
       }
 
+    //cast & crew
+    const getValue = (data)=>{
+        setCastCrewData(data);
+    }
 
     const onChangeTitle = (e) => {
         const first = e.target.value;
@@ -61,6 +87,14 @@ export const AddSingleVideo = () => {
         const genre = e.target.value;
         setGenre(genre);
     }
+    const onChangeLanguage = (e) => {
+        const language = e.target.value;
+        setLanguage(language);
+    }
+    const onChangeMaturity = (e) => {
+        const maturity = e.target.value;
+        setMaturity(maturity);
+    }
     const onChangeSynopsis = (e) => {
         const synopsis = e.target.value;
         setSynopsis(synopsis);
@@ -72,34 +106,41 @@ export const AddSingleVideo = () => {
     const onChangeReleaseDate = (date) => {
         setReleaseDate(date);
     };
-    const handleMultiselect = (selectedList, selectedItem) => {
-        const updatedRoles = [...user_roles, selectedItem.role];
-        setUserRoles(updatedRoles);
-    };
 
-    const handleRemoval = (selectedList, removedItem) => {
-        const updatedRole = user_roles.filter((role) => role !== removedItem.role);
-        setUserRoles(updatedRole);
-    };
     const AddNewSubscriber = (e) => {
         e.preventDefault();
 
         const token = localStorage.getItem('utoken');
+        const images = [];
+        if(imgLandscapeFile){
+            images.push({
+                imageExt: imgLandscapeFile,
+                imageType:"landscape"
+            });
+        }
+        if(imgPortraitFile){
+            images.push({
+                imageExt: imgPortraitFile,
+                imageType:"portrait"
+            });
+        }
         const form_data = {
             title: title,
             category: category,
+            language: language,
             synopsis: synopsis,
-            roles: user_roles,
-            expiry_date: expiryDate,
+            // expiry_date: expiryDate,
             releaseDate: releaseDate,
             genre: genre,
+            castCrew: castCrewData,
+            images:images,
+            maturityRating: maturity
         }
 
         // const form_data = new FormData();
         // form_data.append('firstName', firstName);
         // form_data.append('lastName', lastName);
         // form_data.append('phoneNumber', phone);
-        // form_data.append('role', user_roles);
         // form_data.append('email', email);
 
         console.log(form_data);
@@ -112,28 +153,6 @@ export const AddSingleVideo = () => {
         //     });
     };
 
-    const handleUploadStart = () => {
-        setIsUploading(true);
-        setProgress(0);
-    };
-    const handleProgress = progress => setProgress(progress);
-    const handleUploadError = error => {
-        setIsUploading(false)
-        console.error(error);
-    };
-    const handleUploadSuccess = filename => {
-        setImageURL(filename);
-        setProgress(100);
-        setIsUploading(false);
-        fireDb
-            .storage()
-            .ref("images")
-            .child(filename)
-            .getDownloadURL()
-            .then(url => setImageURL(url));
-    };
-
-    const [options] = useState(data);
     return (
         <div>
             <ol className="breadcrumb float-xl-right">
@@ -152,11 +171,8 @@ export const AddSingleVideo = () => {
             <Panel>
                 <PanelHeader noButton={true}>Add Single Video</PanelHeader>
                 <PanelBody>
-                    {/* <Row>
-                        <Col md="8"> */}
                     <div className="card">
                         <div className="card-body">
-                            {/* <Form> */}
                             <Row>
                                 <Col md={7}>
                                     <Row>
@@ -188,7 +204,6 @@ export const AddSingleVideo = () => {
                                                     type="select"
                                                     name="category"
                                                     id="category"
-                                                    // placeholder="Product Name"
                                                     value={category}
                                                     onChange={onChangeCategory}
                                                 // className={!isInvalidName ? "" : "is-invalid"}
@@ -202,7 +217,6 @@ export const AddSingleVideo = () => {
                                                     type="select"
                                                     name="genre"
                                                     id="genre"
-                                                    // placeholder="Product Name"
                                                     value={genre}
                                                     onChange={onChangeGenre}
                                                 // className={!isInvalidName ? "" : "is-invalid"}
@@ -213,28 +227,26 @@ export const AddSingleVideo = () => {
                                     <Row>
                                         <Col>
                                             <FormGroup>
-                                                <Label for="category">Language</Label>
+                                                <Label for="language">Language</Label>
                                                 <Input
                                                     type="select"
-                                                    name="category"
-                                                    id="category"
-                                                    // placeholder="Product Name"
-                                                    value={category}
-                                                    onChange={onChangeCategory}
+                                                    name="language"
+                                                    id="language"
+                                                    value={language}
+                                                    onChange={onChangeLanguage}
                                                 // className={!isInvalidName ? "" : "is-invalid"}
                                                 />
                                             </FormGroup>
                                         </Col>
                                         <Col>
                                             <FormGroup>
-                                                <Label for="genre">Maturity Rating</Label>
+                                                <Label for="maturity">Maturity Rating</Label>
                                                 <Input
                                                     type="select"
-                                                    name="genre"
-                                                    id="genre"
-                                                    // placeholder="Product Name"
-                                                    value={genre}
-                                                    onChange={onChangeGenre}
+                                                    name="maturity"
+                                                    id="maturity"
+                                                    value={maturity}
+                                                    onChange={onChangeMaturity}
                                                 // className={!isInvalidName ? "" : "is-invalid"}
                                                 >
                                                     <option value="Everyone">Everyone</option>
@@ -269,10 +281,8 @@ export const AddSingleVideo = () => {
                                                     name="synopsis"
                                                     id="synopsis"
                                                     rows="5"
-                                                    // placeholder="Product Name"
                                                     value={synopsis}
                                                     onChange={onChangeSynopsis}
-                                                // className={!isInvalidName ? "" : "is-invalid"}
                                                 />
                                             </FormGroup>
                                         </Col>
@@ -294,7 +304,7 @@ export const AddSingleVideo = () => {
                                                     type="file"
                                                     id="videoFileBrowser"
                                                     name="videoFile"
-                                                    label={fileName || 'choose an image file'}
+                                                    label={fileName || 'choose a Video file'}
                                                     onChange={handleFileChange}
                                                     invalid={invalidFile} />
                                             </FormGroup>
@@ -307,55 +317,49 @@ export const AddSingleVideo = () => {
                                     </Row>
                                     <Row className="mb-2">
                                         <Col>
-                                            <div className="border rounded m-auto" style={{ height: "150px", width: "100px" }}>
-                                                <img src={require("./../../assets/logo/logo-icon.png")} width={100} height={150} />
+                                            <div className="border m-auto" style={{ height: "150px", width: "100px" }}>
+                                                <img src={imgPortraitFile} width={100} height={150} />
                                             </div>
                                         </Col>
                                         <Col>
                                             <FormGroup>
-                                                <Label for="synopsis">video</Label>
-                                                {isUploading && <p>Progress: {progress}</p>}
-                                                {imageURL && <img src={imageURL} />}
-                                                <FileUploader
-                                                    // accept="image/*"
-                                                    name="image"
-                                                    randomizeFilename
-                                                    storageRef={fireDb.storage().ref("images")}
-                                                    onUploadStart={handleUploadStart}
-                                                    onUploadError={handleUploadError}
-                                                    onUploadSuccess={handleUploadSuccess}
-                                                    onProgress={handleProgress}
-                                                />
+                                                <Label>Portrait Image</Label>
+                                            <CustomInput
+                                                    type="file"
+                                                    id="portraitBrowser"
+                                                    name="portraitFile"
+                                                    // label={imgPortraitName || 'choose a portrait image'}
+                                                    onChange={handlePortraitChange}
+                                                    invalid={invalidImgPortrait} />
                                             </FormGroup>
                                         </Col>
                                     </Row>
                                     <Row>
                                         <Col>
-                                            <div className="border rounded m-auto" style={{ height: "100px", width: "150px" }}>
-                                                <img src={require("./../../assets/logo/logo-icon.png")} width={150} height={100} />
+                                            <div className="border m-auto" style={{ height: "100px", width: "150px" }}>
+                                                <img src={imgLandscapeFile} width={150} height={100} />
                                             </div>
                                         </Col>
                                         <Col>
                                             <FormGroup>
-                                                <Label for="synopsis">video</Label>
-                                                {isUploading && <p>Progress: {progress}</p>}
-                                                {imageURL && <img src={imageURL} />}
-                                                <FileUploader
-                                                    // accept="image/*"
-                                                    name="image"
-                                                    randomizeFilename
-                                                    storageRef={fireDb.storage().ref("images")}
-                                                    onUploadStart={handleUploadStart}
-                                                    onUploadError={handleUploadError}
-                                                    onUploadSuccess={handleUploadSuccess}
-                                                    onProgress={handleProgress}
-                                                />
+                                                <Label>Landscape Image</Label>
+                                            <CustomInput
+                                                    type="file"
+                                                    id="landscapeBrowser"
+                                                    name="landscapeFile"
+                                                    // label={imgLandscapeName || 'choose a landscape image'}
+                                                    onChange={handleLandscapeChange}
+                                                    invalid={invalidImgLandscape} />
                                             </FormGroup>
                                         </Col>
                                     </Row>
                                 </Col>
                             </Row>
-                            {/* </Form> */}
+                            <Row>
+                                <Col>
+                                    {/* <DynamicInputs getValue={getValue}/> */}
+                                </Col>
+                            </Row>
                         </div>
                         <div className="card-footer">
                             <Row>
@@ -368,8 +372,6 @@ export const AddSingleVideo = () => {
                             </Row>
                         </div>
                     </div>
-                    {/* </Col>
-                    </Row> */}
                 </PanelBody>
             </Panel>
 

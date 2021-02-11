@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from './../../components/panel/panel.jsx';
+import { Button, Modal, ModalBody, ModalFooter, Label, Input, FormGroup, Form, ModalHeader } from 'reactstrap';
 import makeData from './../make-data';
-import { getData } from './../../services/Utils/DB/DB';
+import { getData, postData } from './../../services/Utils/DB/DB';
 
 const ManageLanguages = () => {
   const [rows, setRows] = useState([]);
@@ -20,6 +21,33 @@ const ManageLanguages = () => {
         console.log(error);
       });
   }, []);
+
+  const [language, setLanguage] = useState("");
+  const onChangeLanguage = (e) => {
+    const language = e.target.value;
+    setLanguage(language);
+  }
+  const addLanguage = (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem('utoken');
+    const form_data = {
+      language: language
+    }
+    postData('/language', JSON.stringify(form_data), token)
+      .then((response) => {
+        // console.log(response);
+      })
+      .catch((error) => {
+        // console.log(error);
+      });
+    toggle();
+  }
+  
+  const [open, setOpen] = useState(false);
+  const [focusAfterClose, setFocusAfterClose] = useState(true);
+
+  const toggle = () => setOpen(!open);
 
   const columns = React.useMemo(
     () => [
@@ -112,7 +140,9 @@ const ManageLanguages = () => {
         Video Languages <small>manage and edit the Video Languages here.</small>
       </h1>
       <Panel>
-        <PanelHeader>All Video Languages Lists</PanelHeader>
+        <PanelHeader noButton={true}>All Video Languages Lists
+        <Button color="default" size="xs" className="mr-2 rounded-0 pull-right" onClick={toggle}>Add Category</Button>
+        </PanelHeader>
         <div className="table-responsive">
           <table className="table table-striped table-bordered" {...getTableProps()}>
             <thead>
@@ -226,6 +256,23 @@ const ManageLanguages = () => {
           </div>
         </PanelBody>
       </Panel>
+      <Modal returnFocusAfterClose={focusAfterClose} isOpen={open}>
+        <ModalHeader toggle={toggle}>Add Language</ModalHeader>
+        <ModalFooter>
+          <FormGroup className="w-100">
+            <Label for="language">Language</Label>
+            <Input
+              type="text"
+              name="language"
+              id="language"
+              value={language}
+              onChange={onChangeLanguage}
+            />
+          </FormGroup>
+          <Button color="primary" className="pull-right" onClick={addLanguage}>Submit</Button>
+          <Button color="default" className="pull-right ml-2" onClick={toggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };

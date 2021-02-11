@@ -4,16 +4,16 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from './../../components/panel/panel.jsx';
 import makeData from './../make-data';
-import { getData } from '../../services/Utils/DB/DB';
+import { getData, postData, deleteData } from '../../services/Utils/DB/DB';
 
 const VideoGenre = () => {
   const [rows, setRows] = useState([]);
   const utoken = localStorage.getItem('utoken') || '';
   useEffect(() => {
-    getData('/genres',utoken)
+    getData('/genres', utoken)
       .then((data) => {
         if (data) {
-          setRows(data); 
+          setRows(data);
           console.log('Manage', data);
         }
       })
@@ -23,6 +23,42 @@ const VideoGenre = () => {
 
   }, []);
 
+  const [genre, setGenre] = useState("");
+  const onChangeGenre = (e) => {
+    const genre = e.target.value;
+    setGenre(genre);
+  }
+  const addGenre = (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem('utoken');
+    const form_data = {
+      genre: genre
+    }
+    postData('/genres', JSON.stringify(form_data), token)
+      .then((response) => {
+        // console.log(response);
+      })
+      .catch((error) => {
+        // console.log(error);
+      });
+    toggle();
+  }
+  const deleteGenre = (e, id) => {
+    e.preventDefault();
+    const token = localStorage.getItem('utoken');
+    const form_data = {
+      genreId : id
+    }
+    console.log(id);
+    deleteData(`/genres/${id}`, JSON.stringify(form_data), token)
+      .then((response) => {
+        // console.log(response);
+      })
+      .catch((error) => {
+        // console.log(error);
+      });
+  }
   const columns = React.useMemo(
     () => [
       {
@@ -88,11 +124,11 @@ const VideoGenre = () => {
     setPageSize,
     state: { pageIndex, pageSize },
   } = useTable({ columns, data, initialState: { pageIndex: 2 } }, useSortBy, usePagination);
-  
-    const [open, setOpen] = useState(false);
-    const [focusAfterClose, setFocusAfterClose] = useState(true);
 
-    const toggle = () => setOpen(!open);
+  const [open, setOpen] = useState(false);
+  const [focusAfterClose, setFocusAfterClose] = useState(true);
+
+  const toggle = () => setOpen(!open);
 
 
   return (
@@ -110,7 +146,7 @@ const VideoGenre = () => {
         Genres <small>manage and approve the genres here.</small>
       </h1>
       <Panel>
-        <PanelHeader>All Genres Lists
+        <PanelHeader noButton={true}>All Genres Lists
         <Button color="default" size="xs" className="mr-2 rounded-0 pull-right" onClick={toggle}>Add Genre</Button>
         </PanelHeader>
         <div className="table-responsive">
@@ -128,14 +164,14 @@ const VideoGenre = () => {
                               column.isSortedDesc ? (
                                 <i className="fa fa-sort-down fa-fw f-s-14 text-blue"></i>
                               ) : (
-                                <i className="fa fa-sort-up fa-fw f-s-14 text-blue"></i>
-                              )
+                                  <i className="fa fa-sort-up fa-fw f-s-14 text-blue"></i>
+                                )
                             ) : (
-                              <i className="fa fa-sort fa-fw f-s-14 opacity-3"></i>
-                            )
+                                <i className="fa fa-sort fa-fw f-s-14 opacity-3"></i>
+                              )
                           ) : (
-                            ''
-                          )}
+                              ''
+                            )}
                         </span>
                       </div>
                     </th>
@@ -153,7 +189,7 @@ const VideoGenre = () => {
                       <td>{rows[id].createdAt}</td>
                       <td className="edit">
                         <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                        <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
+                        <a href="javascript:;" onClick={(e)=>deleteGenre(e, rows[id].genreId)} class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );
@@ -226,21 +262,20 @@ const VideoGenre = () => {
         </PanelBody>
       </Panel>
       <Modal returnFocusAfterClose={focusAfterClose} isOpen={open}>
-      <ModalHeader toggle={toggle}>Add Genre</ModalHeader>
+        <ModalHeader toggle={toggle}>Add Genre</ModalHeader>
         <ModalFooter>
-              <FormGroup className="w-100">
-                <Label for="genre">Genre</Label>
-                <Input
-                    type="text"
-                    name="genre"
-                    id="genre"
-                    // placeholder="Product Name"
-                   // value={genre}
-                  //  onChange={onChangeGenre}
-                />
-            </FormGroup>
-            <Button color="primary" className="pull-right" onClick={toggle}>Submit</Button>            
-            <Button color="default" className="pull-right ml-2" onClick={toggle}>Cancel</Button>
+          <FormGroup className="w-100">
+            <Label for="genre">Genre</Label>
+            <Input
+              type="text"
+              name="genre"
+              id="genre"
+              value={genre}
+              onChange={onChangeGenre}
+            />
+          </FormGroup>
+          <Button color="primary" className="pull-right" onClick={addGenre}>Submit</Button>
+          <Button color="default" className="pull-right ml-2" onClick={toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
     </div>

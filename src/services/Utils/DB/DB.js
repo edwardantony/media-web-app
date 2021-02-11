@@ -27,11 +27,11 @@ export const postData = async (endpoint, form_data, token) => {
 
 export const deleteData = async (endpoint, form_data, token) => {
   const url = baseURL+endpoint;
-  const response = await axios.delete(url, form_data, {
+  const response = await axios.delete(url, {
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'text/plain',
-      'Access-Control-Allow-Origin': true,
+      'Access-Control-Allow-Origin': '*',
     },
   });
 
