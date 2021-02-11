@@ -47,17 +47,14 @@ const VideoGenre = () => {
   const deleteGenre = (e, id) => {
     e.preventDefault();
     const token = localStorage.getItem('utoken');
-    const form_data = {
-      genreId : id
-    }
     console.log(id);
-    deleteData(`/genres/${id}`, JSON.stringify(form_data), token)
-      .then((response) => {
-        // console.log(response);
-      })
-      .catch((error) => {
-        // console.log(error);
-      });
+    deleteData(`/genres?genreId=${id}`, token)
+    .then((response) => {
+      // console.log(response);
+    })
+    .catch((error) => {
+      // console.log(error);
+    });
   }
   const columns = React.useMemo(
     () => [

@@ -4,7 +4,7 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from './../../components/panel/panel.jsx';
 import makeData from './../make-data';
-import { getData, postData } from './../../services/Utils/DB/DB';
+import { getData, postData, deleteData } from './../../services/Utils/DB/DB';
 
 const ManageCategories = () => {
   const [rows, setRows] = useState([]);
@@ -51,6 +51,17 @@ const ManageCategories = () => {
     toggle();
   }
   
+  const deleteCategory = (e, id) => {
+    e.preventDefault();
+    const token = localStorage.getItem('utoken');
+    deleteData(`/categories?categoryId=${id}`, token)
+      .then((response) => {
+        // console.log(response);
+      })
+      .catch((error) => {
+        // console.log(error);
+      });
+  }
   const columns = React.useMemo(
     () => [
       {
@@ -179,7 +190,7 @@ const ManageCategories = () => {
                       <td>{rows[id].updatedAt}</td>
                       <td className="edit">
                         <a href="javascript:;" className="btn btn-primary btn-icon btn-circle btn-sm"><i className="fas fa-pencil-alt"></i></a>
-                        <a href="javascript:;" className="btn btn-danger btn-icon btn-circle btn-sm"><i className="fas fa-trash-alt"></i></a>
+                        <a href="javascript:;" onClick={(e)=>deleteCategory(e, rows[id].categoryId)} className="btn btn-danger btn-icon btn-circle btn-sm"><i className="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );
