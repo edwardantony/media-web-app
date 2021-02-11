@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Panel, PanelBody, PanelFooter, PanelHeader } from '../../components/panel/panel';
 import { Button, Input, FormGroup, Label, Form, Row, Col, CustomInput } from 'reactstrap';
@@ -10,9 +10,13 @@ import { fireDb } from '../../services/firebase';
 import * as moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { getData } from '../../services/Utils/DB/DB';
 // import DynamicInputs from '../../components/dynamicInputs/DynamicInputs';
 
 export const AddSingleVideo = () => {
+    const [genreList, setGenreList] = useState([]);
+    const [categoryList, setCategoryList] = useState([]);
+    const [LanguageList, setLanguageList] = useState([]);
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
     const [genre, setGenre] = useState("");
@@ -23,55 +27,86 @@ export const AddSingleVideo = () => {
     const [releaseDate, setReleaseDate] = useState("");
     const [castCrewData, setCastCrewData] = useState([]);
 
+    const utoken = localStorage.getItem('utoken') || '';
+    useEffect(() => {
+        getData('/genres', utoken)
+            .then((data) => {
+                if (data) {
+                    setGenreList(data);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        getData('/categories', utoken)
+            .then((data) => {
+                if (data) {
+                    setCategoryList(data);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        getData('/languages', utoken)
+            .then((data) => {
+                if (data) {
+                    setLanguageList(data);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    }, []);
     //video upload
     const [fileName, setFileName] = useState("");
     const [invalidFile, setInvalidFile] = useState(false);
-    const handleFileChange =({target: {files}}) => {
+    const handleFileChange = ({ target: { files } }) => {
         console.log(files);
         const cancel = !files.length;
         if (cancel) return;
-    
+
         const [{ size, name }] = files;
         // const maxSize = 50000;
-    
+
         // if (size < maxSize) {
-          setFileName(name);
-          setInvalidFile(false);
+        setFileName(name);
+        setInvalidFile(false);
         // } else {
         //   setFileName('');
         //   setInvalidFile(true)
         // }
-      }
+    }
     //image file upload
     const [imgPortraitName, setImgPortraitName] = useState("");
     const [imgPortraitFile, setImgPortraitFile] = useState(null);
     const [invalidImgPortrait, setInvalidImgPortrait] = useState(false);
-    const handlePortraitChange =({target: {files}}) => {
+    const handlePortraitChange = ({ target: { files } }) => {
         console.log(files);
         const cancel = !files.length;
         if (cancel) return;
-        
+
         setImgPortraitFile(URL.createObjectURL(files[0]))
         const [{ size, name }] = files;
         setImgPortraitName(name);
         setInvalidImgPortrait(false);
-      }
+    }
     //image file upload
     const [imgLandscapeName, setImgLandscapeName] = useState("");
     const [imgLandscapeFile, setImgLandscapeFile] = useState(null);
     const [invalidImgLandscape, setInvalidImgLandscape] = useState(false);
-    const handleLandscapeChange =({target: {files}}) => {
+    const handleLandscapeChange = ({ target: { files } }) => {
         const cancel = !files.length;
         if (cancel) return;
-    
+
         setImgLandscapeFile(URL.createObjectURL(files[0]))
         const [{ size, name }] = files;
         setImgLandscapeName(name);
         setInvalidImgLandscape(false);
-      }
+    }
 
     //cast & crew
-    const getValue = (data)=>{
+    const getValue = (data) => {
         setCastCrewData(data);
     }
 
@@ -112,16 +147,16 @@ export const AddSingleVideo = () => {
 
         const token = localStorage.getItem('utoken');
         const images = [];
-        if(imgLandscapeFile){
+        if (imgLandscapeFile) {
             images.push({
                 imageExt: imgLandscapeFile,
-                imageType:"landscape"
+                imageType: "landscape"
             });
         }
-        if(imgPortraitFile){
+        if (imgPortraitFile) {
             images.push({
                 imageExt: imgPortraitFile,
-                imageType:"portrait"
+                imageType: "portrait"
             });
         }
         const form_data = {
@@ -133,7 +168,7 @@ export const AddSingleVideo = () => {
             releaseDate: releaseDate,
             genre: genre,
             castCrew: castCrewData,
-            images:images,
+            images: images,
             maturityRating: maturity
         }
 
@@ -235,7 +270,13 @@ export const AddSingleVideo = () => {
                                                     value={language}
                                                     onChange={onChangeLanguage}
                                                 // className={!isInvalidName ? "" : "is-invalid"}
-                                                />
+                                                >
+                                                    {LanguageList.map((item, index) => {
+                                                        return(
+                                                        <option key={index} value={item.lang}>{item.lang}</option>
+                                                        )
+                                                    })}
+                                                    </Input>
                                             </FormGroup>
                                         </Col>
                                         <Col>
@@ -324,7 +365,7 @@ export const AddSingleVideo = () => {
                                         <Col>
                                             <FormGroup>
                                                 <Label>Portrait Image</Label>
-                                            <CustomInput
+                                                <CustomInput
                                                     type="file"
                                                     id="portraitBrowser"
                                                     name="portraitFile"
@@ -343,7 +384,7 @@ export const AddSingleVideo = () => {
                                         <Col>
                                             <FormGroup>
                                                 <Label>Landscape Image</Label>
-                                            <CustomInput
+                                                <CustomInput
                                                     type="file"
                                                     id="landscapeBrowser"
                                                     name="landscapeFile"
