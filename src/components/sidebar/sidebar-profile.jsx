@@ -38,7 +38,7 @@ class SidebarProfile extends React.Component {
 									<b className="caret pull-right"></b>
 									{this.state.currentUser.name}
 									<small>
-										<span className="label label-light">{this.state.currentUser.roles}</span>
+										<span class="label label-light">{this.state.currentUser.roles}</span>
 									</small>
 								</div>
 							</Link>

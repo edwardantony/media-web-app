@@ -92,8 +92,8 @@ export const AddAdmin = () => {
         <PanelBody>
                 <Row>
                    <Col md ="8">
-                   <div className="card">
-                     <div className="card-body">
+                   <div class="card">
+                     <div class="card-body">
                      <Form>
                       <Row>
                         <Col>
@@ -157,7 +157,7 @@ export const AddAdmin = () => {
                       </Row>
                     </Form>
                      </div>
-                     <div className="card-footer">
+                     <div class="card-footer">
                      <Row>
                       <Col>
                       <div className="pull-right">

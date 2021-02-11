@@ -113,16 +113,16 @@ const Subscribers = () => {
       </h1>
       <Panel>
         <PanelHeader>All Subscribers Lists</PanelHeader>
-        <div className="table-responsive">
-          <table className="table table-striped table-bordered" {...getTableProps()}>
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered" {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
                     <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div className="d-flex" style={{ minWidth: '1%' }}>
+                      <div class="d-flex" style={{ minWidth: '1%' }}>
                         <span>{column.render('Header')}</span>
-                        <span className="ml-auto">
+                        <span class="ml-auto">
                           {column.sortable ? (
                             column.isSorted ? (
                               column.isSortedDesc ? (
@@ -153,14 +153,14 @@ const Subscribers = () => {
                       <td>{rows[id].phoneNumber}</td>
                       <td>
                         {rows[id].emailVerified ? (
-                          <span className="label label-green">Confirmed</span>
+                          <span class="label label-green">Confirmed</span>
                         ) : (
-                          <span className="label label-danger">Not Confirmed</span>
+                          <span class="label label-danger">Not Confirmed</span>
                         )}
                       </td>
                       <td className="edit">
-                        <a href="javascript:;" className="btn btn-primary btn-icon btn-circle btn-sm"><i className="fas fa-pencil-alt"></i></a>
-                        <a href="javascript:;" className="btn btn-danger btn-icon btn-circle btn-sm"><i className="fas fa-trash-alt"></i></a>
+                        <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="javascript:;" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );
@@ -169,9 +169,9 @@ const Subscribers = () => {
             )}
           </table>
         </div>
-        <hr className="m-0" />
+        <hr class="m-0" />
         <PanelBody>
-          <div className="d-flex align-items-center justify-content-center">
+          <div class="d-flex align-items-center justify-content-center">
             <ul className="pagination mb-0">
               <li className="page-item">
                 <button className="page-link" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
@@ -202,8 +202,8 @@ const Subscribers = () => {
                 </button>
               </li>
             </ul>
-            <div className="ml-3 mr-1">Go to page:</div>
-            <div className="width-50 mx-2">
+            <div class="ml-3 mr-1">Go to page:</div>
+            <div class="width-50 mx-2">
               <input
                 className="form-control"
                 type="number"

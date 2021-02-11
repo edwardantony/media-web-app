@@ -65,16 +65,16 @@ const Banners = () => {
           },
         ],
       },
-      // {
-      //   Header: 'Content Creator',
-      //   columns: [
-      //     {
-      //       Header: 'Content Creator',
-      //       accessor: 'contentCreator',
-      //       sortable: true,
-      //     },
-      //   ],
-      // },
+       {
+         Header: 'Content Creator',
+         columns: [
+          {
+             Header: 'Content Creator',
+            accessor: 'contentCreator',
+             sortable: true,
+           },
+         ],
+       },
       {
         Header: 'Date Of Creation',
         columns: [
@@ -91,16 +91,6 @@ const Banners = () => {
           {
             Header: 'Category',
             accessor: 'category',
-            sortable: true,
-          },
-        ],
-      },
-      {
-        Header: 'Date Of Creation',
-        columns: [
-          {
-            Header: 'Status',
-            accessor: 'status',
             sortable: true,
           },
         ],

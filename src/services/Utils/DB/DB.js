@@ -10,7 +10,6 @@ export const getData = async (endpoint, token) => {
     },
   });
   return data; 
-
 };
 
 
@@ -29,9 +28,7 @@ export const deleteData = async (endpoint, form_data, token) => {
   const url = baseURL+endpoint;
   const response = await axios.delete(url, form_data, {
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'text/plain',
-      'Access-Control-Allow-Origin': true,
+      Authorization: `Bearer ${token}`,
     },
   });
 

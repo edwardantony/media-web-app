@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Button, Modal, ModalBody, ModalFooter, Label, Input, FormGroup, Form, ModalHeader } from 'reactstrap';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from './../../components/panel/panel.jsx';
@@ -97,6 +98,11 @@ const ManageLanguages = () => {
     state: { pageIndex, pageSize },
   } = useTable({ columns, data, initialState: { pageIndex: 2 } }, useSortBy, usePagination);
 
+  const [open, setOpen] = useState(false);
+  const [focusAfterClose, setFocusAfterClose] = useState(true);
+
+  const toggle = () => setOpen(!open);
+
   return (
     <div>
       <ol className="breadcrumb float-xl-right">
@@ -112,7 +118,9 @@ const ManageLanguages = () => {
         Video Languages <small>manage and edit the Video Languages here.</small>
       </h1>
       <Panel>
-        <PanelHeader>All Video Languages Lists</PanelHeader>
+        <PanelHeader>All Video Languages Lists
+        <Button color="default" size="xs" className="mr-2 rounded-0 pull-right" onClick={toggle}>Add New Language</Button>
+        </PanelHeader>
         <div className="table-responsive">
           <table className="table table-striped table-bordered" {...getTableProps()}>
             <thead>
@@ -226,6 +234,36 @@ const ManageLanguages = () => {
           </div>
         </PanelBody>
       </Panel>
+      <Modal returnFocusAfterClose={focusAfterClose} isOpen={open}>
+      <ModalHeader toggle={toggle}>Add Language</ModalHeader>
+        <ModalFooter>
+              <FormGroup className="w-100">
+                <Label for="language">Language Title</Label>
+                <Input
+                    type="text"
+                    name="language"
+                    id="language"
+                    className="mb-1"
+                    // placeholder="Product Name"
+                   // value={language}
+                  //  onChange={onChangeLanguage}
+                />
+            </FormGroup>
+            <FormGroup className="w-100">
+                <Label for="nativeLanguage">Native Language</Label>
+                <Input
+                    type="text"
+                    name="nativeLanguage"
+                    id="nativeLanguage"
+                    // placeholder="Product Name"
+                   // value={nativeLanguage}
+                  //  onChange={onChangenativeLanguage}
+                />
+            </FormGroup>
+            <Button color="primary" className="pull-right" onClick={toggle}>Submit</Button>            
+            <Button color="default" className="pull-right ml-2" onClick={toggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };
