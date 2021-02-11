@@ -38,6 +38,7 @@ const ManageCategories = () => {
 
     const token = localStorage.getItem('utoken');
     const form_data = {
+      iconType:'',
       category: category,
       displayOrder: displayOrder
     }
