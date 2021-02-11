@@ -156,7 +156,7 @@ const VideoGenre = () => {
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
                     <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div class="d-flex" style={{ minWidth: '1%' }}>
+                      <div className="d-flex" style={{ minWidth: '1%' }}>
                         <span>{column.render('Header')}</span>
                         <span className="ml-auto">
                           {column.sortable ? (
@@ -188,8 +188,8 @@ const VideoGenre = () => {
                       <td>{rows[id].createdBy}</td>
                       <td>{rows[id].createdAt}</td>
                       <td className="edit">
-                        <a href="javascript:;" class="btn btn-primary btn-icon btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                        <a href="javascript:;" onClick={(e)=>deleteGenre(e, rows[id].genreId)} class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fas fa-trash-alt"></i></a>
+                        <a href="javascript:;" className="btn btn-primary btn-icon btn-circle btn-sm"><i className="fas fa-pencil-alt"></i></a>
+                        <a href="javascript:;" onClick={(e)=>deleteGenre(e, rows[id].genreId)} className="btn btn-danger btn-icon btn-circle btn-sm"><i className="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );

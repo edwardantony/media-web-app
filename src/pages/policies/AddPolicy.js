@@ -55,8 +55,8 @@ export const AddPolicy = () => {
         <PanelBody>
                 <Row>
                    <Col md ="12">
-                   <div class="card">
-                     <div class="card-body">
+                   <div className="card">
+                     <div className="card-body">
                      <Form>
                       <Row>
                         <Col>
@@ -93,7 +93,7 @@ export const AddPolicy = () => {
                       </Row>
                     </Form>
                      </div>
-                     <div class="card-footer">
+                     <div className="card-footer">
                      <Row>
                       <Col>
                       <div className="pull-right">

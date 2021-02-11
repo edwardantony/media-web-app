@@ -150,8 +150,8 @@ const Banners = () => {
             <thead>
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  {headerGroup.headers.map((column, index) => (
+                    <th key={index} {...column.getHeaderProps(column.getSortByToggleProps())}>
                       <div className="d-flex" style={{ minWidth: '1%' }}>
                         <span>{column.render('Header')}</span>
                         <span className="ml-auto">
@@ -180,7 +180,7 @@ const Banners = () => {
                 {Object.keys(rows).map((id) => {
                   return (
                     <tr key={rows[id].nativeLang}>
-                      <td class='with-img'>
+                      <td className='with-img'>
                       <img src={rows[id].imageUrls.landscape} alt={rows[id].title} className='img-rounded height-30' />
                       </td>
                       <td>{rows[id].title}</td>
@@ -191,9 +191,9 @@ const Banners = () => {
                       <td>{rows[id].createdAt}</td>
                       <td>
                         {rows[id].target.status ? (
-                          <span class="label label-green">{rows[id].target.status}</span>
+                          <span className="label label-green">{rows[id].target.status}</span>
                         ) : (
-                          <span class="label label-danger">{rows[id].target.status}</span>
+                          <span className="label label-danger">{rows[id].target.status}</span>
                         )}
                       </td>
 

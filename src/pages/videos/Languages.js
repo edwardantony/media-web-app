@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Button, Modal, ModalBody, ModalFooter, Label, Input, FormGroup, Form, ModalHeader } from 'reactstrap';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from './../../components/panel/panel.jsx';
-import { Button, Modal, ModalBody, ModalFooter, Label, Input, FormGroup, Form, ModalHeader } from 'reactstrap';
 import makeData from './../make-data';
 import { getData, postData } from './../../services/Utils/DB/DB';
 
@@ -22,17 +22,23 @@ const ManageLanguages = () => {
       });
   }, []);
 
-  const [language, setLanguage] = useState("");
-  const onChangeLanguage = (e) => {
-    const language = e.target.value;
-    setLanguage(language);
+  const [languageTitle, setLanguageTitle] = useState("");
+  const onChangeLanguageTitle = (e) => {
+    const languageTitle = e.target.value;
+    setLanguageTitle(languageTitle);
+  }
+  const [nativeLanguage, setNativeLanguage] = useState("");
+  const onChangeNativeLanguage = (e) => {
+    const nativeLanguage = e.target.value;
+    setNativeLanguage(nativeLanguage);
   }
   const addLanguage = (e) => {
     e.preventDefault();
 
     const token = localStorage.getItem('utoken');
     const form_data = {
-      language: language
+      languageTitle: languageTitle,
+      nativeLanguage: nativeLanguage
     }
     postData('/language', JSON.stringify(form_data), token)
       .then((response) => {
@@ -124,6 +130,7 @@ const ManageLanguages = () => {
     setPageSize,
     state: { pageIndex, pageSize },
   } = useTable({ columns, data, initialState: { pageIndex: 2 } }, useSortBy, usePagination);
+
 
   return (
     <div>
@@ -257,19 +264,29 @@ const ManageLanguages = () => {
         </PanelBody>
       </Panel>
       <Modal returnFocusAfterClose={focusAfterClose} isOpen={open}>
-        <ModalHeader toggle={toggle}>Add Language</ModalHeader>
+      <ModalHeader toggle={toggle}>Add Language</ModalHeader>
         <ModalFooter>
-          <FormGroup className="w-100">
-            <Label for="language">Language</Label>
-            <Input
-              type="text"
-              name="language"
-              id="language"
-              value={language}
-              onChange={onChangeLanguage}
-            />
-          </FormGroup>
-          <Button color="primary" className="pull-right" onClick={addLanguage}>Submit</Button>
+              <FormGroup className="w-100">
+                <Label for="languageTitle">Language Title</Label>
+                <Input
+                  type="text"
+                  name="languageTitle"
+                  id="languageTitle"
+                  value={languageTitle}
+                  onChange={onChangeLanguageTitle}
+                />
+            </FormGroup>
+            <FormGroup className="w-100">
+                <Label for="nativeLanguage">Native Language</Label>
+                <Input
+                    type="text"
+                    name="nativeLanguage"
+                    id="nativeLanguage"
+                   value={nativeLanguage}
+                   onChange={onChangeNativeLanguage}
+                />
+            </FormGroup>
+            <Button color="primary" className="pull-right" onClick={addLanguage}>Submit</Button>
           <Button color="default" className="pull-right ml-2" onClick={toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>

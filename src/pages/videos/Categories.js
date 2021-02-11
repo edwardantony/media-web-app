@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useTable, useSortBy, usePagination } from 'react-table';
 import { Button, Modal, ModalBody, ModalFooter, Label, Input, FormGroup, Form, ModalHeader } from 'reactstrap';
+import { useTable, useSortBy, usePagination } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Panel, PanelHeader, PanelBody } from './../../components/panel/panel.jsx';
 import makeData from './../make-data';
@@ -28,12 +28,18 @@ const ManageCategories = () => {
     const category = e.target.value;
     setCategory(category);
   }
+  const [displayOrder, setDisplayOrder] = useState("");
+  const onChangeDisplayOrder = (e) => {
+    const displayOrder = e.target.value;
+    setDisplayOrder(displayOrder);
+  }
   const addCategory = (e) => {
     e.preventDefault();
 
     const token = localStorage.getItem('utoken');
     const form_data = {
-      category: category
+      category: category,
+      displayOrder: displayOrder
     }
     postData('/cateories', JSON.stringify(form_data), token)
       .then((response) => {
@@ -44,11 +50,6 @@ const ManageCategories = () => {
       });
     toggle();
   }
-  
-  const [open, setOpen] = useState(false);
-  const [focusAfterClose, setFocusAfterClose] = useState(true);
-
-  const toggle = () => setOpen(!open);
   
   const columns = React.useMemo(
     () => [
@@ -115,6 +116,11 @@ const ManageCategories = () => {
     setPageSize,
     state: { pageIndex, pageSize },
   } = useTable({ columns, data, initialState: { pageIndex: 2 } }, useSortBy, usePagination);
+
+  const [open, setOpen] = useState(false);
+  const [focusAfterClose, setFocusAfterClose] = useState(true);
+
+  const toggle = () => setOpen(!open);
 
   return (
     <div>
@@ -246,19 +252,29 @@ const ManageCategories = () => {
         </PanelBody>
       </Panel>
       <Modal returnFocusAfterClose={focusAfterClose} isOpen={open}>
-        <ModalHeader toggle={toggle}>Add Category</ModalHeader>
+      <ModalHeader toggle={toggle}>Add Category</ModalHeader>
         <ModalFooter>
-          <FormGroup className="w-100">
-            <Label for="category">Category</Label>
-            <Input
-              type="text"
-              name="category"
-              id="category"
-              value={category}
-              onChange={onChangeCategory}
-            />
-          </FormGroup>
-          <Button color="primary" className="pull-right" onClick={addCategory}>Submit</Button>
+              <FormGroup className="w-100">
+                <Label for="category">Category Title</Label>
+                <Input
+                  type="text"
+                  name="category"
+                  id="category"
+                  value={category}
+                  onChange={onChangeCategory}
+                />
+            </FormGroup>
+            <FormGroup className="w-100">
+                <Label for="displayOrder">Sort Order</Label>
+                <Input
+                    type="text"
+                    name="displayOrder"
+                    id="displayOrder"
+                   value={displayOrder}
+                   onChange={onChangeDisplayOrder}
+                />
+            </FormGroup>
+            <Button color="primary" className="pull-right" onClick={addCategory}>Submit</Button>
           <Button color="default" className="pull-right ml-2" onClick={toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
