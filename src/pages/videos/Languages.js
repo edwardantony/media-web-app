@@ -37,8 +37,8 @@ const ManageLanguages = () => {
 
     const token = localStorage.getItem('utoken');
     const form_data = {
-      languageTitle: languageTitle,
-      nativeLanguage: nativeLanguage
+      lang: languageTitle,
+      nativeLang: nativeLanguage
     }
     postData('/languages', JSON.stringify(form_data), token)
       .then((response) => {
@@ -53,7 +53,7 @@ const ManageLanguages = () => {
   const deleteLanguage = (e, id) => {
     e.preventDefault();
     const token = localStorage.getItem('utoken');
-    deleteData(`/languages?languageId=${id}`, token)
+    deleteData(`/languages?langId=${id}`, token)
       .then((response) => {
         // console.log(response);
       })
@@ -202,7 +202,7 @@ const ManageLanguages = () => {
                       <td>{rows[id].createdAt}</td>
                       <td className="edit">
                         <a href="javascript:;" className="btn btn-primary btn-icon btn-circle btn-sm"><i className="fas fa-pencil-alt"></i></a>
-                        <a href="javascript:;" onClick={(e)=>deleteLanguage(e, rows[id].languageId)} className="btn btn-danger btn-icon btn-circle btn-sm"><i className="fas fa-trash-alt"></i></a>
+                        <a href="javascript:;" onClick={(e)=>deleteLanguage(e, rows[id].langId)} className="btn btn-danger btn-icon btn-circle btn-sm"><i className="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );
