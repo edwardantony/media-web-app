@@ -8,6 +8,7 @@ import { getData, postData, deleteData } from '../../services/Utils/DB/DB';
 
 const VideoGenre = () => {
   const [rows, setRows] = useState([]);
+  const [reloadStatus, setReloadStatus] = useState(0);
   const utoken = localStorage.getItem('utoken') || '';
   useEffect(() => {
     getData('/genres', utoken)
@@ -21,7 +22,7 @@ const VideoGenre = () => {
         console.log(error);
       });
 
-  }, []);
+  }, [reloadStatus]);
 
   const [genre, setGenre] = useState("");
   const onChangeGenre = (e) => {
@@ -37,7 +38,8 @@ const VideoGenre = () => {
     }
     postData('/genres', JSON.stringify(form_data), token)
       .then((response) => {
-        // console.log(response);
+        console.log(response);
+      setReloadStatus(prev=>prev+1)
       })
       .catch((error) => {
         // console.log(error);
@@ -50,10 +52,12 @@ const VideoGenre = () => {
     console.log(id);
     deleteData(`/genres?genreId=${id}`, token)
     .then((response) => {
-      // console.log(response);
+      console.log(response);
+      setReloadStatus(prev=>prev+1)
     })
     .catch((error) => {
       // console.log(error);
+      setReloadStatus(prev=>prev+1)
     });
   }
   const columns = React.useMemo(
@@ -185,8 +189,8 @@ const VideoGenre = () => {
                       <td>{rows[id].createdBy}</td>
                       <td>{rows[id].createdAt}</td>
                       <td className="edit">
-                        <a href="javascript:;" className="btn btn-primary btn-icon btn-circle btn-sm"><i className="fas fa-pencil-alt"></i></a>
-                        <a href="javascript:;" onClick={(e)=>deleteGenre(e, rows[id].genreId)} className="btn btn-danger btn-icon btn-circle btn-sm"><i className="fas fa-trash-alt"></i></a>
+                        <a className="btn btn-primary btn-icon btn-circle btn-sm"><i className="fas fa-pencil-alt"></i></a>
+                        <a onClick={(e)=>deleteGenre(e, rows[id].genreId)} className="btn btn-danger btn-icon btn-circle btn-sm"><i className="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );

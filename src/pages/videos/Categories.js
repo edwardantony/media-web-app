@@ -8,6 +8,7 @@ import { getData, postData, deleteData } from './../../services/Utils/DB/DB';
 
 const ManageCategories = () => {
   const [rows, setRows] = useState([]);
+  const [reloadStatus, setReloadStatus] = useState(0);
   const utoken = localStorage.getItem('utoken') || '';
   useEffect(() => {
     getData('/categories',utoken)
@@ -21,7 +22,7 @@ const ManageCategories = () => {
         console.log(error);
       });
 
-  }, []);
+  }, [reloadStatus]);
 
   const [category, setCategory] = useState("");
   const onChangeCategory = (e) => {
@@ -45,6 +46,7 @@ const ManageCategories = () => {
     postData('/cateories', JSON.stringify(form_data), token)
       .then((response) => {
         // console.log(response);
+      setReloadStatus(prev=>prev+1)
       })
       .catch((error) => {
         // console.log(error);
@@ -58,6 +60,7 @@ const ManageCategories = () => {
     deleteData(`/categories?categoryId=${id}`, token)
       .then((response) => {
         // console.log(response);
+      setReloadStatus(prev=>prev+1)
       })
       .catch((error) => {
         // console.log(error);
@@ -190,8 +193,8 @@ const ManageCategories = () => {
                       <td>{rows[id].createdBy}</td>
                       <td>{rows[id].updatedAt}</td>
                       <td className="edit">
-                        <a href="javascript:;" className="btn btn-primary btn-icon btn-circle btn-sm"><i className="fas fa-pencil-alt"></i></a>
-                        <a href="javascript:;" onClick={(e)=>deleteCategory(e, rows[id].categoryId)} className="btn btn-danger btn-icon btn-circle btn-sm"><i className="fas fa-trash-alt"></i></a>
+                        <a className="btn btn-primary btn-icon btn-circle btn-sm"><i className="fas fa-pencil-alt"></i></a>
+                        <a onClick={(e)=>deleteCategory(e, rows[id].categoryId)} className="btn btn-danger btn-icon btn-circle btn-sm"><i className="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
                   );

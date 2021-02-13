@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import 'firebase/storage'
 const config = {
   apiKey: 'AIzaSyBUCN5Pv87l2X3OkELOAYrhYdE55nQw4G0',
   authDomain: 'sabhatv-ms-dev.firebaseapp.com',
@@ -10,6 +11,7 @@ const config = {
 };
 
 export const fireDb = firebase.initializeApp(config);
+export const storage = firebase.storage();
 export const fireDbAuth = fireDb.auth();
 export default fireDb.database().ref();
 
