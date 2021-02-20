@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Panel, PanelBody, PanelFooter, PanelHeader } from '../../components/panel/panel';
 import { Button, Input, FormGroup, Label, Form, Row, Col, CustomInput } from 'reactstrap';
@@ -26,6 +26,7 @@ export const AddSingleVideo = () => {
     const [expiryDate, setExpiryDate] = useState("");
     const [releaseDate, setReleaseDate] = useState("");
     const [castCrewData, setCastCrewData] = useState([]);
+    let fileUploaderRef = useRef();
 
     const utoken = localStorage.getItem('utoken') || '';
     useEffect(() => {
@@ -61,23 +62,58 @@ export const AddSingleVideo = () => {
     //video upload
     const [fileName, setFileName] = useState("");
     const [videoFile, setVideoFile] = useState("");
+    const [imgVideoFile, setImgVideoFile] = useState("");
     const [invalidFile, setInvalidFile] = useState(false);
     const handleFileChange = ({ target: { files } }) => {
-        console.log(files);
+        let file = files[0];
+        let reader = new FileReader();
+        // reader.readAsDataURL(file);
+        reader.readAsArrayBuffer(file);
         const cancel = !files.length;
         if (cancel) return;
 
         setVideoFile(files[0])
         const [{ size, name }] = files;
         // const maxSize = 50000;
-
+        reader.onload = () => {
+            var blob = new Blob([reader.result], { type: file.type });
+            var url = URL.createObjectURL(blob);
+            var video = document.createElement('video');
+            var timeupdate = function () {
+                if (snapImage()) {
+                    video.removeEventListener('timeupdate', timeupdate);
+                    video.pause();
+                }
+            };
+            video.addEventListener('loadeddata', function () {
+                if (snapImage()) {
+                    video.removeEventListener('timeupdate', timeupdate);
+                }
+            });
+            var snapImage = function () {
+                var canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+                var image = canvas.toDataURL();
+                var success = image.length > 100000;
+                if (success) {
+                    setImgVideoFile(image);
+                    URL.revokeObjectURL(url);
+                }
+                return success;
+            };
+            video.addEventListener('timeupdate', timeupdate);
+            video.preload = 'metadata';
+            video.src = url;
+            // Load video in Safari / IE11
+            video.muted = true;
+            video.playsInline = true;
+            video.play();
+        }
         // if (size < maxSize) {
         setFileName(name);
         setInvalidFile(false);
-        // } else {
-        //   setFileName('');
-        //   setInvalidFile(true)
-        // }
     }
     //image file upload
     const [imgPortraitName, setImgPortraitName] = useState("");
@@ -110,6 +146,25 @@ export const AddSingleVideo = () => {
         setImgLandscapeName(name);
         setInvalidImgLandscape(false);
     }
+    // const [landImage, setLandImage] = useState(null);
+    // const customOnChangeHandler = (event) => {
+    //     const { target: { files } } = event;
+    //     setImgLandscapeFile(URL.createObjectURL(files[0]));
+    //     console.log(files);
+    //     const filesToStore = [];
+
+    //     // files.forEach(file => filesToStore.push(file));
+    //     setLandImage(files);
+    // }
+
+    // /**
+    // * Start download handler using the file uploader reference
+    // */
+    // const startUploadManually = () => {
+    //     // landImage.forEach(file => {
+    //     fileUploaderRef.startUpload(landImage)
+    //     // });
+    // }
 
     //cast & crew
     const getValue = (data) => {
@@ -154,29 +209,31 @@ export const AddSingleVideo = () => {
 
     const AddNewSingleVideo = (e) => {
         e.preventDefault();
+        // startUploadManually();
 
         const token = localStorage.getItem('utoken');
         const images = [];
         if (imgLandscapeFile) {
+            console.log(landscapeFile);
             images.push({
-                imageExt: landscapeFile,
+                imageExt: landscapeFile.type,
                 imageType: "landscape"
             });
-            handleFireBaseUpload(landscapeFile, "images");
+            handleFireBaseUpload(landscapeFile, "images/landscape");
         }
         if (imgPortraitFile) {
             images.push({
-                imageExt: portraitFile,
+                imageExt: portraitFile.type,
                 imageType: "portrait"
             });
-            handleFireBaseUpload(portraitFile, "images");
+            handleFireBaseUpload(portraitFile, "images/portrait");
         }
         const form_data = {
             title: title,
             category: category,
             language: language,
             synopsis: synopsis,
-            videoExt: videoFile,
+            videoExt: videoFile.type,
             // expiry_date: expiryDate,
             releaseDate: releaseDate,
             genre: genre,
@@ -201,8 +258,8 @@ export const AddSingleVideo = () => {
             .catch((error) => {
                 // console.log(error);
             });
-            if(videoFile)
-        handleFireBaseUpload(videoFile,"videos");
+        if (videoFile)
+            handleFireBaseUpload(videoFile, "videos/original");
     };
     const handleFireBaseUpload = (file, type) => {
         console.log('start of upload')
@@ -361,17 +418,10 @@ export const AddSingleVideo = () => {
                                                     id="maturity"
                                                     value={releaseDate}
                                                     onChange={onChangeReleaseDate}
-                                                // className={!isInvalidName ? "" : "is-invalid"}
                                                 />
                                                 {/* <DatePicker selected={releaseDate} onChange={onChangeReleaseDate} className="form-control"/> */}
                                             </FormGroup>
                                         </Col>
-                                        {/* <Col> */}
-                                        {/* <FormGroup>
-                                                <Label for="genre">Expiry Date</Label>
-                                                <DatePicker selected={expiryDate} onChange={onChangeExpiryDate} className="form-control" wrapperClassName="d-block" />
-                                            </FormGroup> */}
-                                        {/* </Col> */}
                                     </Row>
                                     <Row>
                                         <Col md={12}>
@@ -390,69 +440,6 @@ export const AddSingleVideo = () => {
                                     </Row>
                                 </Col>
                                 <Col md={5}>
-                                    {/* <Row>
-                                        <Col>
-                                            <h4>Upload Video</h4>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            <div style={{ height: "20px" }}>
-                                            </div>
-                                            <FormGroup>
-                                                <CustomInput
-                                                    type="file"
-                                                    id="videoFileBrowser"
-                                                    name="videoFile"
-                                                    label={fileName || 'choose a Video file'}
-                                                    onChange={handleFileChange}
-                                                    invalid={invalidFile} />
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            <h4>Upload Thumbnail</h4>
-                                        </Col>
-                                    </Row>
-                                    <Row className="mb-2">
-                                        <Col>
-                                            <div className="border m-auto" style={{ height: "150px", width: "100px" }}>
-                                                <img src={imgPortraitFile} width={100} height={150} />
-                                            </div>
-                                        </Col>
-                                        <Col>
-                                            <FormGroup>
-                                                <Label>Portrait Image</Label>
-                                                <CustomInput
-                                                    type="file"
-                                                    id="portraitBrowser"
-                                                    name="portraitFile"
-                                                    // label={imgPortraitName || 'choose a portrait image'}
-                                                    onChange={handlePortraitChange}
-                                                    invalid={invalidImgPortrait} />
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row> 
-                                        <Col>
-                                            <div className="border m-auto" style={{ height: "100px", width: "150px" }}>
-                                                <img src={imgLandscapeFile} width={150} height={100} />
-                                            </div>
-                                        </Col>
-                                        <Col>
-                                            <FormGroup>
-                                                <Label>Landscape Image</Label>
-                                                <CustomInput
-                                                    type="file"
-                                                    id="landscapeBrowser"
-                                                    name="landscapeFile"
-                                                    // label={imgLandscapeName || 'choose a landscape image'}
-                                                    onChange={handleLandscapeChange}
-                                                    invalid={invalidImgLandscape} />
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>*/}
                                     <Row>
                                         <Col>
                                             <h4>Upload Video</h4>
@@ -468,10 +455,16 @@ export const AddSingleVideo = () => {
                                                     name="videoFile"
                                                     onChange={handleFileChange}
                                                     accept="video/mp4" />
-                                                <div className="text-center">
-                                                    <i className="fa fa-video"></i>
-                                                    <p>Upload Video.</p>
-                                                </div>
+                                                {!imgVideoFile ?
+                                                    <div className="text-center">
+                                                        <i className="fa fa-video"></i>
+                                                        <p>Upload Video.</p>
+                                                    </div>
+                                                    :
+                                                    <div className="m-auto" style={{ height: "100%", width: "100%" }}>
+                                                        <img src={imgVideoFile} style={{ height: "100%", width: "auto" }} />
+                                                    </div>
+                                                }
                                             </div>
                                         </Col>
                                     </Row>
@@ -501,6 +494,11 @@ export const AddSingleVideo = () => {
                                         <Col md={8} className="p-2">
                                             <label>Select Story Art</label>
                                             <div className="file-upload image-upload">
+                                                {/* <FileUploader
+                                            //     storageRef={storage.ref("images")}
+                                            //     onChange={customOnChangeHandler} // ⇐ Call your handler
+                                            //     ref={instance => { fileUploaderRef = instance; } }  // ⇐ reference the component
+                                            // />*/}
                                                 <input
                                                     type="file"
                                                     id="landscapeBrowser"

@@ -4,7 +4,13 @@ import axios from 'axios';
 
 class Auth {
   async SignIn(email, password) {
-    const response = await fireDbAuth.signInWithEmailAndPassword(email, password);
+    const response = await fireDbAuth.signInWithEmailAndPassword(email, password)
+    .then(res=> {
+      return "success";
+    })
+    .catch(err=>{
+      return err;
+    });
 
     return response;
   }

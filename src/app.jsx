@@ -11,6 +11,8 @@ import FloatSubMenu from './components/float-sub-menu/float-sub-menu.jsx';
 import SignIn from './pages/user/SignIn';
 import axios from 'axios';
 import SignUp from './pages/user/SignUp.js';
+import ReactNotifications from "react-notifications-component";
+import 'react-notifications-component/dist/theme.css'
 
 class App extends React.Component {
   constructor(props) {
@@ -410,6 +412,7 @@ class App extends React.Component {
                 (this.state.hasScroll ? 'has-scroll ' : '')
               }
             >
+              <ReactNotifications />
               {this.state.pageHeader && <Header />}
               {this.state.pageSidebar && <Sidebar />}
               {this.state.pageTwoSidebar && <SidebarRight />}

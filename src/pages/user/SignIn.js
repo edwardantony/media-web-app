@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { Alert } from 'reactstrap';
 import { PageSettings } from '../../config/page-settings.js';
 import { fireDbAuth } from '../../services/firebase';
 import { Auth } from '../../services/Utils/Auth/Auth';
@@ -13,7 +14,10 @@ class LoginV1 extends React.Component {
     this.state = {
       email: '',
       password: '',
+      errorTxt: '',
+      alert: false
     };
+    this.onDismiss = this.onDismiss.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -44,14 +48,19 @@ class LoginV1 extends React.Component {
 
     const response = await auth.SignIn(this.state.email, this.state.password);
 
-    fireDbAuth.onAuthStateChanged((user) => {
-      user.getIdToken(true).then(async (token) => {
-        localStorage.setItem('utoken', token);
-        history.push('/');
-        window.location.reload();
+    if (response === "success") {
+      this.setState({ errorTxt: '', alert: false });
+      fireDbAuth.onAuthStateChanged((user) => {
+        user.getIdToken(true).then(async (token) => {
+          localStorage.setItem('utoken', token);
+          history.push('/');
+          window.location.reload();
+        })
       });
-    });
-
+    }
+    else {
+      this.setState({ errorTxt: response.message, alert: true });
+    }
     // console.log(response);
   }
 
@@ -59,6 +68,13 @@ class LoginV1 extends React.Component {
     this.setState({
       [e.target.id]: e.target.value,
     });
+  }
+
+  onDismiss () {
+    this.setState({
+      alert: false,
+      errorTxt: ''
+    })
   }
 
   render() {
@@ -97,6 +113,9 @@ class LoginV1 extends React.Component {
                     onChange={this.handleChange}
                   />
                 </div>
+                <Alert color="success" isOpen={this.state.alert} toggle={this.onDismiss}>
+                  <strong>{this.state.errorTxt}</strong>
+                </Alert>
                 <div className="checkbox checkbox-css m-b-20">
                   <input type="checkbox" id="remember_checkbox" />
                   <label htmlFor="remember_checkbox">Remember Me</label>

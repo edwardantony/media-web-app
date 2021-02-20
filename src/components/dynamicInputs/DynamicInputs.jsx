@@ -23,6 +23,7 @@ function DynamicInputs(props) {
         const list = [...inputList];
         list.splice(index, 1);
         setInputList(list);
+
     };
 
     // handle click event of the Add button
